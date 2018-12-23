@@ -26,7 +26,11 @@ class Repository implements RepositoryInterface {
 
     // create a new record in the database
     public function create(array $data) {
-        return $this->model->create($data);
+        $created = $this->model->create($data);
+        if($this->model->belongsTo){
+            return $this->model->with($this->model->belongsTo)->findOrFail($created->id);
+        }
+        return $created;
     }
 
     // update record in the database
@@ -58,7 +62,7 @@ class Repository implements RepositoryInterface {
 
     // Eager load database relationships
     public function with($relations) {
-        return $this->model->with($relations);
+        return $this->model->with($relations)->get();
     }
 
     public function search(array $data) {
@@ -71,6 +75,15 @@ class Repository implements RepositoryInterface {
 //        }
         $searchResult = $searchResult->get();
         return $searchResult;
+    }
+    
+    public function parents($parents) {
+        $parentsCollection = collect();
+        foreach ($parents as $parent){
+            $parentSection = $parent::all();
+            $parentsCollection->push($parentSection);
+        }
+        return $parentsCollection;
     }
 
 }

@@ -17,14 +17,17 @@ class BlockController extends Controller
     }
 
     public function index() {
-        return $this->model->all();
+        $blocks = $this->model->with($this->model->getModel()->belongsTo);
+        $parents = $this->model->parents($this->model->getModel()->parents);
+        $streets = $parents[0];
+        //dd($streets);
+        return view('blocks.index', [
+            'blocks' => $blocks,
+            'streets' => $streets,
+        ]);
     }
 
-    public function store(Request $request) {
-        $this->validate($request, [
-            'body' => 'required|max:500'
-        ]);
-
+    public function store(Request $request) {       
         // create record and pass in only fields that are fillable
         return $this->model->create($request->only($this->model->getModel()->fillable));
     }

@@ -3,30 +3,30 @@
 @section('content')
 <div class="wrapper">
     <div class="panel-body"> 
-            <div class="form-group">
-                <label for="chanel-name" class="col-sm-3 control-label">               
-                    {{ __('enter street name') }}
-                </label>
-                <div class="col-sm-3">
-                    <input type="text" name="name" id="nameSearch" class="form-control">
-                    <input type="hidden" name="_tokenSearch" value="{{ csrf_token() }}">
-                </div>          
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-3">
-                    <button type="submit" class="btn btn-default search">
-                        <i class="fa fa-plus">Search street</i>
-                    </button>
-                </div>
-            </div>
-  
-
-        @if (count($streets) > 0)        
-        <table class="table table-striped task-table" id="table">
-            <thead><th>Current Streets
+        <div class="form-group">
+            <label for="chanel-name" class="col-sm-3 control-label">               
+                {{ __('enter street name') }}
+            </label>
+            <div class="col-sm-3">
+                <input type="text" name="name" id="nameSearch" class="form-control">
+                <input type="hidden" name="_tokenSearch" value="{{ csrf_token() }}">
+            </div>          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-3">
+                <button type="submit" class="btn btn-default search">
+                    <i class="fa fa-plus">Search street</i>
+                </button>
                 <button type="submit" class="btn btn-default addElement">
                     <i class="fa fa-plus">+  street</i>
                 </button>
+            </div>
+        </div>
+
+
+        @if (count($streets) > 0)        
+        <table class="table table-striped task-table" id="table">
+            <thead><th>Current Streets               
             </th>
 
             </thead>

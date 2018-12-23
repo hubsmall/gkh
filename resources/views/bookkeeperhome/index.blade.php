@@ -3,7 +3,7 @@
 @section('content')
 <div class="list-group">
   <a href="{{url('streets') }}" class="list-group-item list-group-item-action list-group-item-primary">УЛИЦЫ</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-primary">ДОМА</a>
+  <a href="{{url('blocks') }}" class="list-group-item list-group-item-action list-group-item-primary">ДОМА</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-primary">КВАРТИРЫ</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-primary">ЖИТЕЛИ</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-info">УСЛУГИ / ТАРИФЫ</a>

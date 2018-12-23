@@ -16,7 +16,7 @@ class StreetController extends Controller {
         $this->model = new Repository($street);
     }
 
-    public function index() {
+    public function index() {       
         $streets = $this->model->all();
         return view('streets.index', [
             'streets' => $streets,

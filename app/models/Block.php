@@ -15,4 +15,8 @@ class Block extends Model
     public function flats() {
         return $this->hasMany(Flat::class, 'block_id');
     }
+    
+    public $belongsTo = ['street'];
+    
+    public $parents = ['\App\models\Street'];
 }
