@@ -45,5 +45,12 @@ class StreetController extends Controller {
     public function destroy(Request $request) {
         return $this->model->delete($request->id);
     }
+    
+    public function search(Request $request) {
+        $fields = $request->only($this->model->getModel()->fillable);
+        unset($fields['_token']);
+        $output = $this->model->search($fields);
+        return response()->json(['result'   => $output]);
+    }
 
 }

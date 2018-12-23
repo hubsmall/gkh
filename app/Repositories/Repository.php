@@ -61,4 +61,16 @@ class Repository implements RepositoryInterface {
         return $this->model->with($relations);
     }
 
+    public function search(array $data) {
+        $searchResult = $this->model;
+        foreach ($data as $key => $val){
+            $searchResult = $searchResult->where($key, 'like', $val . '%');
+        }
+//        if ($data['name']) {
+//            $searchResult = $searchResult->where('name', 'like', $data['name'] . '%');
+//        }
+        $searchResult = $searchResult->get();
+        return $searchResult;
+    }
+
 }

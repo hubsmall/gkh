@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Repositories;
+
 /**
  *
  * @author vova
  */
 interface RepositoryInterface {
-    
+
     public function all();
 
     public function create(array $data);
@@ -16,4 +17,6 @@ interface RepositoryInterface {
     public function delete($id);
 
     public function show($id);
+
+    public function search(array $data);
 }

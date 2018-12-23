@@ -67,6 +67,32 @@ $(document).ready(function () {
         $('#myModal').modal('show');
     });
 
+    $(document).on('click', '.search', function () {
+        $.ajax({
+            type: 'post',
+            url: 'streets/search',
+            data: {
+                '_token': $('input[name=_tokenSearch]').val(),
+                'name': $('#nameSearch').val()
+            },
+            success: function (data) {
+                var newTable = "<tbody class='tbody'>";
+                $.each(data.result, function(index, item) {
+                    newTable += "<tr class='table-text rowInList" +
+                            item.id + "'> <td> <div>" + item.name + "</div> </td> <td> <button data-id='" +
+                            item.id + "' data-name='" + item.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            "<td> <button data-id='" +
+                            item.id + "' data-name='" + item.name +
+                            "' type='submit' class='btn btn-info updateElement'>\n\
+ <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
+                });
+                newTable += "</tbody>";
+                $('.tbody').replaceWith(newTable);
+            }
+        });
+
+    });
+
 
     $('.modal-footer').on('click', '.edit', function () {
         //var arr = $("#chanelP").val();
@@ -87,7 +113,7 @@ $(document).ready(function () {
                         data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <button data-id='" +
                         data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
                         "<td> <button data-id='" +
-                        data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td>");
+                        data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
 
@@ -136,10 +162,10 @@ $(document).ready(function () {
                 } else {
                     $('.error').remove();
                     $('#table').append("<tr class='table-text rowInList" +
-                        data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <button data-id='" +
-                        data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                        "<td> <button data-id='" +
-                        data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td>");
+                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <button data-id='" +
+                            data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            "<td> <button data-id='" +
+                            data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
                 }
             }
         });
