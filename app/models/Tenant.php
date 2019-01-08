@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tenant extends Model
 {
-    protected $fillable = ['name', 'passport', 'flat_id'];
+    protected $fillable = ['name', 'passport'];
     
-    public function flat() {
-        return $this->belongsTo(Flat::class, 'flat_id');
-    }
 }

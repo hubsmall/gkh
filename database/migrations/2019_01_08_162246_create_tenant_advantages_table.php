@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdvantagesTable extends Migration
+class CreateTenantAdvantagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateAdvantagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('advantages', function (Blueprint $table) {
+        Schema::create('tenantAdvantages', function (Blueprint $table) {
             $table->increments('id');
-            $table->float('percent');
-            $table->unsignedInteger('serve_id');
             $table->unsignedInteger('tenant_id');
-            $table->foreign('serve_id')
-                    ->references('id')->on('serves')
-                    ->onDelete('cascade');
+            $table->unsignedInteger('advantage_id');
             $table->foreign('tenant_id')
                     ->references('id')->on('tenants')
+                    ->onDelete('cascade');
+            $table->foreign('advantage_id')
+                    ->references('id')->on('advantages')
                     ->onDelete('cascade');
             $table->timestamps();
         });
@@ -35,6 +34,6 @@ class CreateAdvantagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('advantages');
+        Schema::dropIfExists('tenantAdvantages');
     }
 }
