@@ -38,6 +38,7 @@ $(document).ready(function () {
         $('.form-horizontal').show();
         $('#I').val($(this).data('id'));
         $('#N').val($(this).data('name'));
+        $('#S').val($(this).data('streetid'));
         $('#myModal').modal('show');
 
         var nameInput = $('#N').val().length;
@@ -68,21 +69,20 @@ $(document).ready(function () {
     $(document).on('click', '.search', function () {
         $.ajax({
             type: 'post',
-            url: 'streets/search',
+            url: 'blocks/search',
             data: {
                 '_token': $('input[name=_tokenSearch]').val(),
-                'name': $('#nameSearch').val()
+                'number': $('#nameSearch').val(),
+                'street_id': $('#streetIdSearch').val(),
             },
             success: function (data) {
                 var newTable = "<tbody class='tbody'>";
                 $.each(data.result, function(index, item) {
                     newTable += "<tr class='table-text rowInList" +
-                            item.id + "'> <td> <div>" + item.name + "</div> </td> <td> <button data-id='" +
-                            item.id + "' data-name='" + item.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            item.id + "'> <td> <div>" + item.number + "</div> </td> <td> <div>" + item.street.name + "</div> </td> <td> <button data-id='" +
+                            item.id + "' data-name='" + item.number + "' data-streetid='" + item.street.id + "' data-streetname='" + item.street.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
                             "<td> <button data-id='" +
-                            item.id + "' data-name='" + item.name +
-                            "' type='submit' class='btn btn-info updateElement'>\n\
- <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
+                            item.id + "' data-name='" + item.number + "' data-streetid='" + item.street.id + "' data-streetname='" + item.street.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
                 });
                 newTable += "</tbody>";
                 $('.tbody').replaceWith(newTable);
@@ -93,25 +93,21 @@ $(document).ready(function () {
 
 
     $('.modal-footer').on('click', '.edit', function () {
-        //var arr = $("#chanelP").val();
-        //arr = arr.data;
-        //arr.forEach(function (item, i, arr) {
-        //    alert(i + ": " + item + " (массив:" + arr + ")");
-        //});
         $.ajax({
             type: 'post',
-            url: 'streets/update',
+            url: 'blocks/update',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#I').val(),
-                'name': $('#N').val()
+                'number': $('#N').val(),
+                'street_id': $('#S').val()
             },
             success: function (data) {
                 $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
-                        data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <button data-id='" +
-                        data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                        "<td> <button data-id='" +
-                        data.id + "' data-name='" + data.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                            data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.street.name + "</div> </td> <td> <button data-id='" +
+                            data.id + "' data-name='" + data.number + "' data-streetid='" + data.street.id + "' data-streetname='" + data.street.name + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            "<td> <button data-id='" +
+                            data.id + "' data-name='" + data.number + "' data-streetid='" + data.street.id + "' data-streetname='" + data.street.name + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
 
@@ -134,7 +130,7 @@ $(document).ready(function () {
     $('.modal-footer').on('click', '.delete', function () {
         $.ajax({
             type: 'post',
-            url: 'streets/destroy',
+            url: 'blocks/destroy',
             data: {
                 '_token': $('input[name=_token]').val(),
                 'id': $('.did').text()

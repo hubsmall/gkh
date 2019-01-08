@@ -13,8 +13,8 @@
             </div> 
             <div class="col-sm-3">
                 <label class="mr-sm-2" for="inlineFormCustomSelect">Streets</label>
-                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-                    <option selected>Choose...</option>
+                <select class="custom-select mr-sm-2" id="streetIdSearch">
+                    <option value="" selected>Choose...</option>
                     @foreach ($streets as $street)
                     <option value="{{$street->id}}">{{$street->name}}</option>
                     @endforeach
@@ -30,7 +30,7 @@
                     <i class="fa fa-plus">+  block</i>
                 </button>
             </div>
-            </di                                      v>
+            </div>
             <h3>Current Blocks</h3>
             @if (count($blocks) > 0)        
             <table class="table table-striped task-table" id="table">
@@ -90,7 +90,7 @@
                             <label class="control-label col-sm-2" for="S">Streets</label>
                             <div class="col-sm-10">
                                 <select class="custom-select mr-sm-2" id="S">
-                                    <option selected>Choose...</option>
+                                    
                                     @foreach ($streets as $street)
                                     <option value="{{$street->id}}">{{$street->name}}</option>
                                     @endforeach

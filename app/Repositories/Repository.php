@@ -27,7 +27,7 @@ class Repository implements RepositoryInterface {
     // create a new record in the database
     public function create(array $data) {
         $created = $this->model->create($data);
-        if($this->model->belongsTo){
+        if ($this->model->belongsTo) {
             return $this->model->with($this->model->belongsTo)->findOrFail($created->id);
         }
         return $created;
@@ -36,7 +36,11 @@ class Repository implements RepositoryInterface {
     // update record in the database
     public function update(array $data, $id) {
         $record = $this->model->find($id);
-        return $record->update($data);
+        $record->update($data);
+        if ($this->model->belongsTo) {
+            return $this->model->with($this->model->belongsTo)->findOrFail($record->id);
+        }
+        return $record;
     }
 
     // remove record from the database
@@ -66,8 +70,12 @@ class Repository implements RepositoryInterface {
     }
 
     public function search(array $data) {
-        $searchResult = $this->model;
-        foreach ($data as $key => $val){
+        if ($this->model->belongsTo) {
+            $searchResult = $this->model->with($this->model->belongsTo);
+        } else {
+            $searchResult = $this->model;
+        }
+        foreach ($data as $key => $val) {
             $searchResult = $searchResult->where($key, 'like', $val . '%');
         }
 //        if ($data['name']) {
@@ -76,10 +84,10 @@ class Repository implements RepositoryInterface {
         $searchResult = $searchResult->get();
         return $searchResult;
     }
-    
+
     public function parents($parents) {
         $parentsCollection = collect();
-        foreach ($parents as $parent){
+        foreach ($parents as $parent) {
             $parentSection = $parent::all();
             $parentsCollection->push($parentSection);
         }
