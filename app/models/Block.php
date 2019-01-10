@@ -19,4 +19,6 @@ class Block extends Model
     public $belongsTo = ['street'];
     
     public $parents = ['\App\models\Street'];
+    
+    public $hasManys = [];
 }

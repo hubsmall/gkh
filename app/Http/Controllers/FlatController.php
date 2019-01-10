@@ -17,15 +17,16 @@ class FlatController extends Controller
     }
 
     public function index() {
-        return $this->model->all();
+        $flats = $this->model->with($this->model->getModel()->belongsTo[0].'.'.$this->model->getModel()->belongsTo[1]);      
+        $parents = $this->model->parents($this->model->getModel()->grandparents);
+        $streets = $parents[0];
+        return view('flats.index', [
+            'flats' => $flats,
+            'streets' => $streets,
+        ]);
     }
 
     public function store(Request $request) {
-        $this->validate($request, [
-            'body' => 'required|max:500'
-        ]);
-
-        // create record and pass in only fields that are fillable
         return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
@@ -33,14 +34,22 @@ class FlatController extends Controller
         return $this->model->show($id);
     }
 
-    public function update(Request $request, $id) {
-        // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-
-        return $this->model->find($id);
+    public function update(Request $request) {
+        return response()->json($this->model->update($request->only($this->model->getModel()->fillable), $request->id));
     }
 
-    public function destroy($id) {
-        return $this->model->delete($id);
+    public function destroy(Request $request) {
+        return $this->model->delete($request->id);
+    }
+    public function search(Request $request) {
+        $fields = $request->only($this->model->getModel()->fillable);
+        if($request->street_id && !$request->block_id){
+            $output = $this->model->searchThrough($request->street_id);
+            return response()->json(['result'   => $output]);
+        }
+        unset($fields['_token']);
+        unset($fields['street_id']);
+        $output = $this->model->search($fields);
+        return response()->json(['result'   => $output]);
     }
 }

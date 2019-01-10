@@ -28,7 +28,16 @@ class Repository implements RepositoryInterface {
     public function create(array $data) {
         $created = $this->model->create($data);
         if ($this->model->belongsTo) {
-            return $this->model->with($this->model->belongsTo)->findOrFail($created->id);
+            $parents = $this->model->belongsTo;
+            $parentsStr = $parents;
+            if (count($parents) > 1) {
+                $parentsStr = '';
+                foreach ($parents as $parent) {
+                    $parentsStr .= $parent . '.';
+                }
+                $parentsStr = substr($parentsStr, 0, -1);
+            }
+            return $this->model->with($parentsStr)->findOrFail($created->id);
         }
         return $created;
     }
@@ -38,7 +47,16 @@ class Repository implements RepositoryInterface {
         $record = $this->model->find($id);
         $record->update($data);
         if ($this->model->belongsTo) {
-            return $this->model->with($this->model->belongsTo)->findOrFail($record->id);
+            $parents = $this->model->belongsTo;
+            $parentsStr = $parents;
+            if (count($parents) > 1) {
+                $parentsStr = '';
+                foreach ($parents as $parent) {
+                    $parentsStr .= $parent . '.';
+                }
+                $parentsStr = substr($parentsStr, 0, -1);
+            }
+            return $this->model->with($parentsStr)->findOrFail($record->id);
         }
         return $record;
     }
@@ -70,9 +88,25 @@ class Repository implements RepositoryInterface {
     }
 
     public function search(array $data) {
+        
+        
         if ($this->model->belongsTo) {
-            $searchResult = $this->model->with($this->model->belongsTo);
-        } else {
+            $parents = $this->model->belongsTo;
+            $parentsStr = $parents;
+            if (count($parents) > 1) {
+                $parentsStr = '';
+                foreach ($parents as $parent) {
+                    $parentsStr .= $parent . '.';
+                }
+                $parentsStr = substr($parentsStr, 0, -1);
+            }
+            $searchResult = $this->model->with($parentsStr);
+        }
+ 
+//        if ($this->model->belongsTo) {
+//            $searchResult = $this->model->with($this->model->belongsTo);
+//        } 
+        else {
             $searchResult = $this->model;
         }
         foreach ($data as $key => $val) {
@@ -92,6 +126,28 @@ class Repository implements RepositoryInterface {
             $parentsCollection->push($parentSection);
         }
         return $parentsCollection;
+    }
+
+    public function searchThrough($grandparentId) {
+        $searchResult = $this->model->grandparents[0]::find($grandparentId)->grandchildren;
+        $Ids = $searchResult->map(function ($item) {
+            return $item->id;
+        });
+        //использовать айдишники $searchResult и заново сделатб запрос для забора отношений 
+        $searchResult = '';
+        if ($this->model->belongsTo) {
+            $parents = $this->model->belongsTo;
+            $parentsStr = $parents;
+            if (count($parents) > 1) {
+                $parentsStr = '';
+                foreach ($parents as $parent) {
+                    $parentsStr .= $parent . '.';
+                }
+                $parentsStr = substr($parentsStr, 0, -1);
+            }
+            return $this->model->with($parentsStr)->find($Ids);
+        }
+        return $this->model->find($Ids);
     }
 
 }

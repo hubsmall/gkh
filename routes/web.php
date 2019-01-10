@@ -16,6 +16,12 @@ Route::post('blocks/store','BlockController@store');
 Route::post('blocks/destroy','BlockController@destroy');
 Route::post('blocks/search','BlockController@search');
 
+Route::get('flats','FlatController@index');
+Route::post('flats/update','FlatController@update');
+Route::post('flats/store','FlatController@store');
+Route::post('flats/destroy','FlatController@destroy');
+Route::post('flats/search','FlatController@search');
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});

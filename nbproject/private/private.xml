@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>app/Http/Controllers/FlatController.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>23</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/blocks/index.blade.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Repositories/Repository.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/StreetController.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/routes/web.php</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/public/js/flats.js</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/FlatController.php</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Flat.php</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/flats/index.blade.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/public/js/blocks.js</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Block.php</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Street.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/BlockController.php</file>
         </group>
     </open-files>

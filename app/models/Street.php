@@ -11,4 +11,15 @@ class Street extends Model
     public function blocks() {
         return $this->hasMany(Block::class, 'street_id');
     }
+    
+    public function grandchildren()
+    {
+        return $this->hasManyThrough(Flat::class, Block::class);
+    }
+      
+    public static function hasManys() {
+        return 'blocks';
+    }
+    
+    
 }

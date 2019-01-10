@@ -11,4 +11,11 @@ class Flat extends Model
     public function block() {
         return $this->belongsTo(Block::class, 'block_id');
     }
+    
+    public $belongsTo = ['block','street'];
+    
+    public $parents = [Block::class];
+    
+    public $grandparents = [Street::class];
+    
 }
