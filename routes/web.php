@@ -34,6 +34,12 @@ Route::post('serves/store','ServeController@store');
 Route::post('serves/destroy','ServeController@destroy');
 Route::post('serves/search','ServeController@search');
 
+Route::get('advantages','AdvantageController@index');
+Route::post('advantages/update','AdvantageController@update');
+Route::post('advantages/store','AdvantageController@store');
+Route::post('advantages/destroy','AdvantageController@destroy');
+Route::post('advantages/search','AdvantageController@search');
+
 
 //Route::get('/', function () {
 //    return view('welcome');
