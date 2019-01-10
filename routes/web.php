@@ -22,6 +22,13 @@ Route::post('flats/store','FlatController@store');
 Route::post('flats/destroy','FlatController@destroy');
 Route::post('flats/search','FlatController@search');
 
+Route::get('tenants','TenantController@index');
+Route::post('tenants/update','TenantController@update');
+Route::post('tenants/store','TenantController@store');
+Route::post('tenants/destroy','TenantController@destroy');
+Route::post('tenants/search','TenantController@search');
+
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});
