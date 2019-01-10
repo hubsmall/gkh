@@ -17,12 +17,14 @@ class FlatController extends Controller
     }
 
     public function index() {
-        $flats = $this->model->with($this->model->getModel()->belongsTo[0].'.'.$this->model->getModel()->belongsTo[1]);      
+        $flats = $this->model->with($this->model->getModel()->belongsTo[0],$this->model->getModel()->belongsTo[1]); 
         $parents = $this->model->parents($this->model->getModel()->grandparents);
         $streets = $parents[0];
+        $tenants = $parents[1];
         return view('flats.index', [
             'flats' => $flats,
             'streets' => $streets,
+            'tenants' => $tenants,
         ]);
     }
 

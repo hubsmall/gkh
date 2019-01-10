@@ -41,7 +41,7 @@
             @if (count($flats) > 0)        
             <table class="table table-striped task-table" id="table">
                 <thead>
-                <th>Number</th><th>Block</th><th>Street</th>
+                <th>Number</th><th>Block</th><th>Street</th><th>Owner</th>
                 </thead>
                 <tbody class="tbody">
                     @foreach ($flats as $flat)
@@ -55,11 +55,15 @@
                         <td>
                             <div>{{ $flat->block->street->name }}</div>                     
                         </td>
+                        <td>
+                            <div>{{ $flat->owner->name }}</div>                     
+                        </td>
                         <td>                   
                             <button data-id="{{$flat->id}}" data-name="{{$flat->number}}" 
                                     data-blockid="{{$flat->block->id}}"
                                     data-blocknumber="{{$flat->block->number}}"
                                     data-streetid="{{$flat->block->street->id}}"
+                                    data-owner="{{$flat->owner->id}}"
                                     type="submit" class="btn btn-danger deleteElement">
                                 <i class="fa fa-btn fa-trash"></i>Delete
                             </button>                       
@@ -69,6 +73,7 @@
                                     data-blockid="{{$flat->block->id}}"
                                     data-blocknumber="{{$flat->block->number}}"
                                     data-streetid="{{$flat->block->street->id}}"
+                                    data-owner="{{$flat->owner->id}}"
                                     type="submit" class="btn btn-info updateElement">
                                 <i class="fa fa-btn fa-trash"></i>Update
                             </button>                    
@@ -97,6 +102,15 @@
                                 <input type="text" name="id" hidden=""  id="I">                          
                                 <input type="number" min="1" name="name" class="form-control inputValidation" id="N">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            </div>
+                            <label class="control-label col-sm-2" for="O">Owner:</label>
+                            <div class="col-sm-10">                      
+                                <select class="custom-select mr-sm-2" id="O"> 
+                                    <option selected="">choose</option>
+                                    @foreach ($tenants as $tenant)
+                                    <option value="{{$tenant->id}}">{{$tenant->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <label class="control-label col-sm-2" for="S">Streets</label>
                             <div class="col-sm-10">

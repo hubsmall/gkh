@@ -6,16 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flat extends Model
 {
-    protected $fillable = ['number','block_id'];
+    protected $fillable = ['number','block_id','tenant_id'];
     
     public function block() {
         return $this->belongsTo(Block::class, 'block_id');
     }
     
-    public $belongsTo = ['block','street'];
+    public function owner() {
+        return $this->belongsTo(Tenant::class, 'tenant_id');
+    }
     
-    public $parents = [Block::class];
+    public $belongsTo = ['owner','block.street'];
     
-    public $grandparents = [Street::class];
+    public $parents = [Block::class,Tenant::class];
+    
+    public $grandparents = [Street::class,Tenant::class];
     
 }

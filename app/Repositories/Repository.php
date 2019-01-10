@@ -29,15 +29,11 @@ class Repository implements RepositoryInterface {
         $created = $this->model->create($data);
         if ($this->model->belongsTo) {
             $parents = $this->model->belongsTo;
-            $parentsStr = $parents;
-            if (count($parents) > 1) {
-                $parentsStr = '';
-                foreach ($parents as $parent) {
-                    $parentsStr .= $parent . '.';
-                }
-                $parentsStr = substr($parentsStr, 0, -1);
+            $result = $this->model;
+            foreach ($parents as $parent) {
+                $result = $result->with($parent);
             }
-            return $this->model->with($parentsStr)->findOrFail($created->id);
+            return $result->findOrFail($created->id);
         }
         return $created;
     }
@@ -48,15 +44,11 @@ class Repository implements RepositoryInterface {
         $record->update($data);
         if ($this->model->belongsTo) {
             $parents = $this->model->belongsTo;
-            $parentsStr = $parents;
-            if (count($parents) > 1) {
-                $parentsStr = '';
-                foreach ($parents as $parent) {
-                    $parentsStr .= $parent . '.';
-                }
-                $parentsStr = substr($parentsStr, 0, -1);
+            $result = $this->model;
+            foreach ($parents as $parent) {
+                $result = $result->with($parent);
             }
-            return $this->model->with($parentsStr)->findOrFail($record->id);
+            return $result->findOrFail($record->id);
         }
         return $record;
     }
@@ -88,33 +80,20 @@ class Repository implements RepositoryInterface {
     }
 
     public function search(array $data) {
-        
-        
+
+
         if ($this->model->belongsTo) {
             $parents = $this->model->belongsTo;
-            $parentsStr = $parents;
-            if (count($parents) > 1) {
-                $parentsStr = '';
-                foreach ($parents as $parent) {
-                    $parentsStr .= $parent . '.';
-                }
-                $parentsStr = substr($parentsStr, 0, -1);
+            $searchResult = $this->model;
+            foreach ($parents as $parent) {
+                $searchResult = $searchResult->with($parent);
             }
-            $searchResult = $this->model->with($parentsStr);
-        }
- 
-//        if ($this->model->belongsTo) {
-//            $searchResult = $this->model->with($this->model->belongsTo);
-//        } 
-        else {
+        } else {
             $searchResult = $this->model;
         }
         foreach ($data as $key => $val) {
             $searchResult = $searchResult->where($key, 'like', $val . '%');
         }
-//        if ($data['name']) {
-//            $searchResult = $searchResult->where('name', 'like', $data['name'] . '%');
-//        }
         $searchResult = $searchResult->get();
         return $searchResult;
     }
@@ -134,18 +113,13 @@ class Repository implements RepositoryInterface {
             return $item->id;
         });
         //использовать айдишники $searchResult и заново сделатб запрос для забора отношений 
-        $searchResult = '';
         if ($this->model->belongsTo) {
             $parents = $this->model->belongsTo;
-            $parentsStr = $parents;
-            if (count($parents) > 1) {
-                $parentsStr = '';
-                foreach ($parents as $parent) {
-                    $parentsStr .= $parent . '.';
-                }
-                $parentsStr = substr($parentsStr, 0, -1);
+            $searchResult = $this->model;
+            foreach ($parents as $parent) {
+                $searchResult = $searchResult->with($parent);
             }
-            return $this->model->with($parentsStr)->find($Ids);
+            return $searchResult->find($Ids);
         }
         return $this->model->find($Ids);
     }

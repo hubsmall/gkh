@@ -87,11 +87,11 @@ $(document).ready(function () {
         $('.form-horizontal').show();
         $('#I').val($(this).data('id'));
         $('#N').val($(this).data('name'));
+        $('#O').val($(this).data('owner'));
         
         $('#S').trigger('change');
         $('#S').val($(this).data('streetid'));
         $('#B').val($(this).data('blockid'));
-        //$('#B').text($(this).data('blocknumber'));
         $('#myModal').modal('show');
 
         var nameInput = $('#N').val().length;
@@ -133,10 +133,18 @@ $(document).ready(function () {
                 var newTable = "<tbody class='tbody'>";
                 $.each(data.result, function (index, item) {
                     newTable += "<tr class='table-text rowInList" +
-                            item.id + "'> <td> <div>" + item.number + "</div> </td> <td> <div>" + item.block.number + "</div> </td> <td> <div>" + item.block.street.name + "</div> </td> <td> <button data-id='" +
-                            item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id + "' data-blocknumber='" + item.block.number + "' data-streetid='" + item.block.street.id + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            item.id + "'> <td> <div>" + item.number + "</div> </td> <td> <div>" + item.block.number +
+                            "</div> </td> <td> <div>" + item.block.street.name + "</div> </td> <td> <div>" + item.owner.name +
+                            "</div> </td> <td> <button data-id='" +
+                            item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id +
+                            "' data-blocknumber='" + item.block.number + "' data-streetid='" + item.block.street.id 
+                            + "' data-owner='" + item.owner.id +
+                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
                             "<td> <button data-id='" +
-                            item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id + "' data-blocknumber='" + item.block.number + "' data-streetid='" + item.block.street.id + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
+                            item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id 
+                            + "' data-blocknumber='" + item.block.number + "' data-streetid='" 
+                            + item.block.street.id + "' data-owner='" + item.owner.id 
+                            + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
                 });
                 newTable += "</tbody>";
                 $('.tbody').replaceWith(newTable);
@@ -158,10 +166,18 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
-                        data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number + "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <button data-id='" +
-                        data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id + "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                        "<td> <button data-id='" +
-                        data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id + "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                            data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number +
+                            "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name +
+                            "</div> </td> <td> <button data-id='" +
+                            data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id +
+                            "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id 
+                            + "' data-owner='" + data.owner.id +
+                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            "<td> <button data-id='" +
+                            data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id 
+                            + "' data-blocknumber='" + data.block.number + "' data-streetid='" 
+                            + data.block.street.id + "' data-owner='" + data.owner.id 
+                            + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
 
@@ -172,8 +188,7 @@ $(document).ready(function () {
             $(this).css("border", "2px solid red");
         } else {
             $(this).css("border", "2px solid green");
-        }
-        //alert($('#chanelN').val().length+"----"+$('#chanelD').val().length);    
+        }   
         if ($('#N').val().length === 0) {
             $('.actionBtn').prop('disabled', true);
         } else {
@@ -202,7 +217,8 @@ $(document).ready(function () {
             data: {
                 '_token': $('input[name=_token]').val(),
                 'number': $('#N').val(),
-                'block_id': $('#B').val()
+                'block_id': $('#B').val(),
+                'tenant_id': $('#O').val()
             },
             success: function (data) {
                 if ((data.errors)) {
@@ -211,15 +227,24 @@ $(document).ready(function () {
                 } else {
                     $('.error').remove();
                     $('#table').append("<tr class='table-text rowInList" +
-                            data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number + "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <button data-id='" +
-                            data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id + "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                            data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number +
+                            "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name +
+                            "</div> </td> <td> <button data-id='" +
+                            data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id +
+                            "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id 
+                            + "' data-owner='" + data.owner.id +
+                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
                             "<td> <button data-id='" +
-                            data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id + "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                            data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id 
+                            + "' data-blocknumber='" + data.block.number + "' data-streetid='" 
+                            + data.block.street.id + "' data-owner='" + data.owner.id 
+                            + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
                 }
             }
         });
         $('#N').val('');
         $('#B').val('');
+        $('#O').val('');
     });
 
 });

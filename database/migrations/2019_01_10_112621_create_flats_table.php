@@ -17,8 +17,12 @@ class CreateFlatsTable extends Migration
             $table->increments('id');
             $table->integer('number');
             $table->unsignedInteger('block_id');
+            $table->unsignedInteger('tenant_id');
             $table->foreign('block_id')
                     ->references('id')->on('blocks')
+                    ->onDelete('cascade');          
+            $table->foreign('tenant_id')
+                    ->references('id')->on('tenants')
                     ->onDelete('cascade');
             $table->timestamps();
         });

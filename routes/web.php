@@ -28,6 +28,12 @@ Route::post('tenants/store','TenantController@store');
 Route::post('tenants/destroy','TenantController@destroy');
 Route::post('tenants/search','TenantController@search');
 
+Route::get('serves','ServeController@index');
+Route::post('serves/update','ServeController@update');
+Route::post('serves/store','ServeController@store');
+Route::post('serves/destroy','ServeController@destroy');
+Route::post('serves/search','ServeController@search');
+
 
 //Route::get('/', function () {
 //    return view('welcome');
