@@ -8,6 +8,7 @@
   <a href="{{url('tenants') }}" class="list-group-item list-group-item-action list-group-item-primary">ЖИТЕЛИ</a>
   <a href="{{url('serves') }}" class="list-group-item list-group-item-action list-group-item-info">УСЛУГИ / ТАРИФЫ</a>
   <a href="{{url('indications') }}" class="list-group-item list-group-item-action list-group-item-info">ПОКАЗАНИЯ</a>
+  <a href="{{url('privileged') }}" class="list-group-item list-group-item-action list-group-item-info">ЛЬГОТНИКИ</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-info">КВИТАНЦИИ</a>
   <a href="{{url('advantages') }}" class="list-group-item list-group-item-action list-group-item-info">ЛЬГОТЫ</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">ОТЧЕТНОСТЬ</a>

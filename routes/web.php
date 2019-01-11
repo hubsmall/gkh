@@ -46,6 +46,12 @@ Route::post('indications/store','IndicationController@store');
 Route::post('indications/destroy','IndicationController@destroy');
 Route::post('indications/search','IndicationController@search');
 
+Route::get('privileged','PrivilegedController@index');
+Route::post('privileged/update','PrivilegedController@update');
+Route::post('privileged/store','PrivilegedController@store');
+Route::post('privileged/destroy','PrivilegedController@destroy');
+Route::post('privileged/search','PrivilegedController@search');
+
 
 //Route::get('/', function () {
 //    return view('welcome');
