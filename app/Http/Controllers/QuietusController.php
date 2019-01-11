@@ -3,29 +3,40 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\Quietus;
+use App\models\Quietu;
+use App\models\Flat;
 use App\Repositories\Repository;
 
-class QuietusController extends Controller
-{
+class QuietusController extends Controller {
+
     // space that we can use the repository from
     protected $model;
 
-    public function __construct(Quietus $quietus) {
+    public function __construct(Quietu $quietu) {
         // set the model
-        $this->model = new Repository($quietus);
+        $this->model = new Repository($quietu);
     }
 
     public function index() {
-        return $this->model->all();
+        $quietus = $this->model->with($this->model->getModel()->belongsTo[0]);
+        $parents = $this->model->parents($this->model->getModel()->grandparents);
+        $streets = $parents[0];
+        return view('quietus.index', [
+            'quietus' => $quietus,
+            'streets' => $streets,
+        ]);
+    }
+    
+    public function createQuietusForMonth() {
+        $flatIds = Flat::pluck('id')->toArray();
+        foreach ($flatIds as $flatId){
+            $fillable = ['pay_status' => FALSE, 'flat_id' => $flatId];
+            $this->model->create($fillable);
+        }
+        return redirect('/quietus');
     }
 
     public function store(Request $request) {
-        $this->validate($request, [
-            'body' => 'required|max:500'
-        ]);
-
-        // create record and pass in only fields that are fillable
         return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
@@ -33,14 +44,25 @@ class QuietusController extends Controller
         return $this->model->show($id);
     }
 
-    public function update(Request $request, $id) {
-        // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-
-        return $this->model->find($id);
+    public function update(Request $request) {
+        return response()->json($this->model->update($request->only($this->model->getModel()->fillable), $request->id));
     }
 
-    public function destroy($id) {
-        return $this->model->delete($id);
+    public function destroy(Request $request) {
+        return $this->model->delete($request->id);
     }
+
+    public function search(Request $request) {
+        $fields = $request->only($this->model->getModel()->fillable);
+        if($request->block_id && !$request->flat_id){
+            $output = $this->model->searchThrough($request->block_id,'quietus');
+            return response()->json(['result'   => $output]);
+        }
+        unset($fields['_token']);
+        unset($fields['street_id']);
+        unset($fields['block_id']);
+        $output = $this->model->search($fields);
+        return response()->json(['result'   => $output]);
+    }
+
 }

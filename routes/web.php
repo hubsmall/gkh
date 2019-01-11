@@ -52,6 +52,12 @@ Route::post('privileged/store','PrivilegedController@store');
 Route::post('privileged/destroy','PrivilegedController@destroy');
 Route::post('privileged/search','PrivilegedController@search');
 
+Route::get('quietus','QuietusController@index');
+Route::post('quietus/update','QuietusController@update');
+Route::get('quietus/createQuietusForMonth','QuietusController@createQuietusForMonth');
+Route::post('quietus/destroy','QuietusController@destroy');
+Route::post('quietus/search','QuietusController@search');
+
 
 //Route::get('/', function () {
 //    return view('welcome');

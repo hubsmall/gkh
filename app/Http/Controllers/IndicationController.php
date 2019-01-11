@@ -46,7 +46,7 @@ class IndicationController extends Controller
     public function search(Request $request) {
         $fields = $request->only($this->model->getModel()->fillable);
         if($request->block_id && !$request->flat_id){
-            $output = $this->model->searchThrough($request->block_id);
+            $output = $this->model->searchThrough($request->block_id,'indications');
             return response()->json(['result'   => $output]);
         }
         unset($fields['_token']);

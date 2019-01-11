@@ -76,7 +76,7 @@ class Repository implements RepositoryInterface {
 
     // Eager load database relationships
     public function with($relations) {
-        return $this->model->with($relations)->get();
+        return $this->model->with($relations)->orderBy('created_at', 'desc')->get();
     }
 
     public function search(array $data) {
@@ -107,8 +107,8 @@ class Repository implements RepositoryInterface {
         return $parentsCollection;
     }
 
-    public function searchThrough($grandparentId) {
-        $searchResult = $this->model->ancestorForThrough::find($grandparentId)->grandchildren;
+    public function searchThrough($grandparentId, $relation) {
+        $searchResult = $this->model->ancestorForThrough::find($grandparentId)->$relation;
         $Ids = $searchResult->map(function ($item) {
             return $item->id;
         });
