@@ -46,6 +46,7 @@ class QuietusController extends Controller {
 
     public function update(Request $request) {
         return response()->json($this->model->update($request->only($this->model->getModel()->fillable), $request->id));
+        
     }
 
     public function destroy(Request $request) {

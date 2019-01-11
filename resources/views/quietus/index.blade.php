@@ -49,12 +49,12 @@
         @if (count($quietus) > 0)        
         <table class="table table-striped task-table" id="table">
             <thead>
-            <th>Paid</th><th>Flat</th><th>Block</th><th>Street</th><th>Date</th>
+            <th>Paid</th><th>Flat</th><th>Block</th><th>Street</th><th>Date</th><th>Total</th>
             </thead>
             <tbody class="tbody">
                 @foreach ($quietus as $quietu)
                 <tr class="table-text rowInList{{$quietu->id}}">
-                    <td>
+                    <td class="pay_status{{$quietu->id}}">
                         <div>{{ $quietu->pay_status }}</div>                     
                     </td>                       
                     <td>
@@ -69,6 +69,9 @@
                     <td>
                         <div>{{ $quietu->created_at }}</div>                     
                     </td>
+                    <td>
+                        <div>{{ $quietu->calculate }}</div>                     
+                    </td>
                     <td>                   
                         <button data-id="{{$quietu->id}}"                               
                                 type="submit" class="btn btn-danger deleteElement">
@@ -77,7 +80,7 @@
                     </td>
                     <td>                               
                         <button data-id="{{$quietu->id}}" data-paystatus="{{$quietu->pay_status}}"                                
-                                type="submit" class="btn btn-info updateElement">
+                                type="submit" class="btn btn-info updateElement pay_statusBtn{{$quietu->id}}">
                             <i class="fa fa-btn fa-trash"></i>Update
                         </button>                    
                     </td>

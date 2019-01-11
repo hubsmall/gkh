@@ -62,8 +62,8 @@ $(document).ready(function () {
         $('.deleteContent').hide();
         $('.form-horizontal').show();
         $('#I').val($(this).data('id'));
-        $('#P').val($(this).data('paystatus'));      
-        $('#myModal').modal('show');       
+        $('#P').val($(this).data('paystatus'));
+        $('#myModal').modal('show');
     });
 
     $(document).on('click', '.deleteElement', function () {
@@ -97,11 +97,11 @@ $(document).ready(function () {
             success: function (data) {
                 var newTable = "<tbody class='tbody'>";
                 $.each(data.result, function (index, item) {
-                    newTable += "<tr class='table-text rowInList"+item.id+"'> <td> <div>"+item.pay_status
-                            +"</div> </td> <td> <div>"+item.flat.number+"</div> </td> <td> <div>"+item.flat.block.number
-                            +"</div> </td> <td> <div>"+item.flat.block.street.name+"</div> </td> <td> <div>"+item.created_at+"</div> </td> <td> <button data-id='"
-                            +item.id+"' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td><td> <button data-id='"
-                            +item.id+"' data-paystatus='"+item.pay_status+"' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
+                    newTable += "<tr class='table-text rowInList" + item.id + "'> <td> <div>" + item.pay_status
+                            + "</div> </td> <td> <div>" + item.flat.number + "</div> </td> <td> <div>" + item.flat.block.number
+                            + "</div> </td> <td> <div>" + item.flat.block.street.name + "</div> </td> <td> <div>" + item.created_at + "</div> </td> <td> <button data-id='"
+                            + item.id + "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td><td> <button data-id='"
+                            + item.id + "' data-paystatus='" + item.pay_status + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
                 });
                 newTable += "</tbody>";
                 $('.tbody').replaceWith(newTable);
@@ -109,7 +109,7 @@ $(document).ready(function () {
         });
 
     });
-   $('.modal-footer').on('click', '.edit', function () {
+    $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'post',
             url: 'quietus/update',
@@ -119,15 +119,12 @@ $(document).ready(function () {
                 'pay_status': $('#P').val()
             },
             success: function (data) {
-                $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList"+data.id+"'> <td> <div>"+data.pay_status
-                            +"</div> </td> <td> <div>"+data.flat.number+"</div> </td> <td> <div>"+data.flat.block.number
-                            +"</div> </td> <td> <div>"+data.flat.block.street.name+"</div> </td> <td> <div>"+data.created_at+"</div> </td> <td> <button data-id='"
-                            +data.id+"' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td><td> <button data-id='"
-                            +data.id+"' data-paystatus='"+data.pay_status+"' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                $('.pay_status' + data.id).replaceWith("<td class='pay_status"+data.id+"'><div>" + data.pay_status + "</div> </td>");
+                $('.pay_statusBtn' + data.id).replaceWith("<button data-id='" + data.id + "' data-paystatus='" + data.pay_status + "' type='submit' class='btn btn-info updateElement pay_statusBtn"+data.id+"'> <i class='fa fa-btn fa-trash'>Update</i></button>");
             }
         });
 
-    });    
+    });
     $('.modal-footer').on('click', '.delete', function () {
         $.ajax({
             type: 'post',
