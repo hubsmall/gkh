@@ -16,9 +16,13 @@ class Block extends Model
         return $this->hasMany(Flat::class, 'block_id');
     }
     
+    public function grandchildren()
+    {
+        return $this->hasManyThrough(Indication::class, Flat::class);
+    }
+    
     public $belongsTo = ['street'];
     
     public $parents = ['\App\models\Street'];
     
-    public $hasManys = [];
 }

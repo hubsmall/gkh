@@ -22,4 +22,6 @@ class Flat extends Model
     
     public $grandparents = [Street::class,Tenant::class];
     
+    public $ancestorForThrough= Street::class;
+    
 }

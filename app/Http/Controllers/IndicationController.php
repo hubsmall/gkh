@@ -17,15 +17,18 @@ class IndicationController extends Controller
     }
 
     public function index() {
-        return $this->model->all();
+        $indications = $this->model->with($this->model->getModel()->belongsTo[0],$this->model->getModel()->belongsTo[1]); 
+        $parents = $this->model->parents($this->model->getModel()->grandparents);
+        $streets = $parents[0];
+        $serves = $parents[1];
+        return view('indications.index', [
+            'indications' => $indications,
+            'streets' => $streets,
+            'serves' => $serves,
+        ]);
     }
 
-    public function store(Request $request) {
-        $this->validate($request, [
-            'body' => 'required|max:500'
-        ]);
-
-        // create record and pass in only fields that are fillable
+   public function store(Request $request) {
         return $this->model->create($request->only($this->model->getModel()->fillable));
     }
 
@@ -33,14 +36,23 @@ class IndicationController extends Controller
         return $this->model->show($id);
     }
 
-    public function update(Request $request, $id) {
-        // update model and only pass in the fillable fields
-        $this->model->update($request->only($this->model->getModel()->fillable), $id);
-
-        return $this->model->find($id);
+    public function update(Request $request) {
+        return response()->json($this->model->update($request->only($this->model->getModel()->fillable), $request->id));
     }
 
-    public function destroy($id) {
-        return $this->model->delete($id);
+    public function destroy(Request $request) {
+        return $this->model->delete($request->id);
+    }
+    public function search(Request $request) {
+        $fields = $request->only($this->model->getModel()->fillable);
+        if($request->block_id && !$request->flat_id){
+            $output = $this->model->searchThrough($request->block_id);
+            return response()->json(['result'   => $output]);
+        }
+        unset($fields['_token']);
+        unset($fields['street_id']);
+        unset($fields['block_id']);
+        $output = $this->model->search($fields);
+        return response()->json(['result'   => $output]);
     }
 }

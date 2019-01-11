@@ -40,6 +40,12 @@ Route::post('advantages/store','AdvantageController@store');
 Route::post('advantages/destroy','AdvantageController@destroy');
 Route::post('advantages/search','AdvantageController@search');
 
+Route::get('indications','IndicationController@index');
+Route::post('indications/update','IndicationController@update');
+Route::post('indications/store','IndicationController@store');
+Route::post('indications/destroy','IndicationController@destroy');
+Route::post('indications/search','IndicationController@search');
+
 
 //Route::get('/', function () {
 //    return view('welcome');

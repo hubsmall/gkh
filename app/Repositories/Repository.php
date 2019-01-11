@@ -108,7 +108,7 @@ class Repository implements RepositoryInterface {
     }
 
     public function searchThrough($grandparentId) {
-        $searchResult = $this->model->grandparents[0]::find($grandparentId)->grandchildren;
+        $searchResult = $this->model->ancestorForThrough::find($grandparentId)->grandchildren;
         $Ids = $searchResult->map(function ($item) {
             return $item->id;
         });
