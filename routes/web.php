@@ -58,6 +58,9 @@ Route::get('quietus/createQuietusForMonth','QuietusController@createQuietusForMo
 Route::post('quietus/destroy','QuietusController@destroy');
 Route::post('quietus/search','QuietusController@search');
 
+Route::get('reports','ReportController@index');
+Route::get('reports/crossCalculte','ReportController@crossCalculte');
+
 
 //Route::get('/', function () {
 //    return view('welcome');

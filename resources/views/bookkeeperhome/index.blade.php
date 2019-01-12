@@ -11,7 +11,7 @@
   <a href="{{url('privileged') }}" class="list-group-item list-group-item-action list-group-item-info">ЛЬГОТНИКИ</a>
   <a href="{{url('quietus') }}" class="list-group-item list-group-item-action list-group-item-info">КВИТАНЦИИ</a>
   <a href="{{url('advantages') }}" class="list-group-item list-group-item-action list-group-item-info">ЛЬГОТЫ</a>
-  <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">ОТЧЕТНОСТЬ</a>
+  <a href="{{url('reports') }}" class="list-group-item list-group-item-action list-group-item-secondary">ОТЧЕТНОСТЬ</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">АРХИВАЦИЯ</a>
   <a href="#" class="list-group-item list-group-item-action list-group-item-success">О ПРОГРАММЕ</a>
 </div>

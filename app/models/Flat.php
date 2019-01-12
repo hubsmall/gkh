@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Flat extends Model
 {
-    protected $fillable = ['number','block_id','tenant_id'];
+    protected $fillable = ['number','block_id','tenant_id','area'];
     
     public function block() {
         return $this->belongsTo(Block::class, 'block_id');

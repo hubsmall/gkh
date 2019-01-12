@@ -12,15 +12,7 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Repositories/Repository.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/IndicationController.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/public/js/flats.js</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/FlatController.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/flats/index.blade.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Flat.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/public/js/indications.js</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Indication.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/indications/index.blade.php</file>
         </group>
     </open-files>
 </project-private>

@@ -41,7 +41,7 @@
             @if (count($flats) > 0)        
             <table class="table table-striped task-table" id="table">
                 <thead>
-                <th>Number</th><th>Block</th><th>Street</th><th>Owner</th>
+                <th>Number</th><th>Block</th><th>Street</th><th>Owner</th><th>Area</th>
                 </thead>
                 <tbody class="tbody">
                     @foreach ($flats as $flat)
@@ -57,6 +57,9 @@
                         </td>
                         <td>
                             <div>{{ $flat->owner->name }}</div>                     
+                        </td>
+                        <td>
+                            <div>{{ $flat->area }}</div>                     
                         </td>
                         <td>                   
                             <button data-id="{{$flat->id}}" data-name="{{$flat->number}}" 
@@ -74,6 +77,7 @@
                                     data-blocknumber="{{$flat->block->number}}"
                                     data-streetid="{{$flat->block->street->id}}"
                                     data-owner="{{$flat->owner->id}}"
+                                    data-area="{{$flat->area}}"
                                     type="submit" class="btn btn-info updateElement">
                                 <i class="fa fa-btn fa-trash"></i>Update
                             </button>                    
@@ -111,6 +115,10 @@
                                     <option value="{{$tenant->id}}">{{$tenant->name}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <label class="control-label col-sm-2" for="A">Area</label>
+                            <div class="col-sm-10">                         
+                                <input type="number" min="0" step="0.01" class="form-control inputValidation" id="A">
                             </div>
                             <label class="control-label col-sm-2" for="S">Streets</label>
                             <div class="col-sm-10">

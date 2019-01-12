@@ -97,6 +97,7 @@ $(document).ready(function () {
         $('#N').val($(this).data('name'));
         $('#O').val($(this).data('owner'));
         $('#S').val($(this).data('streetid'));
+        $('#A').val($(this).data('area'));
         addBlockSelect($(this).data('blockid'));        
         $('#myModal').modal('show');
 
@@ -140,7 +141,7 @@ $(document).ready(function () {
                 $.each(data.result, function (index, item) {
                     newTable += "<tr class='table-text rowInList" +
                             item.id + "'> <td> <div>" + item.number + "</div> </td> <td> <div>" + item.block.number +
-                            "</div> </td> <td> <div>" + item.block.street.name + "</div> </td> <td> <div>" + item.owner.name +
+                            "</div> </td> <td> <div>" + item.block.street.name + "</div> </td> <td> <div>" + item.owner.name +"</div> </td> <td> <div>" + item.area +
                             "</div> </td> <td> <button data-id='" +
                             item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id +
                             "' data-blocknumber='" + item.block.number + "' data-streetid='" + item.block.street.id
@@ -149,7 +150,7 @@ $(document).ready(function () {
                             "<td> <button data-id='" +
                             item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id
                             + "' data-blocknumber='" + item.block.number + "' data-streetid='"
-                            + item.block.street.id + "' data-owner='" + item.owner.id
+                            + item.block.street.id + "' data-owner='" + item.owner.id + "' data-area='" + item.area
                             + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
                 });
                 newTable += "</tbody>";
@@ -168,12 +169,13 @@ $(document).ready(function () {
                 '_token': $('input[name=_token]').val(),
                 'id': $('#I').val(),
                 'number': $('#N').val(),
-                'block_id': $('#B').val()
+                'block_id': $('#B').val(),
+                'area': $('#A').val()
             },
             success: function (data) {
                 $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
                         data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number +
-                        "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name +
+                        "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name+"</div> </td> <td> <div>" + data.area +
                         "</div> </td> <td> <button data-id='" +
                         data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id +
                         "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id
@@ -182,7 +184,7 @@ $(document).ready(function () {
                         "<td> <button data-id='" +
                         data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id
                         + "' data-blocknumber='" + data.block.number + "' data-streetid='"
-                        + data.block.street.id + "' data-owner='" + data.owner.id
+                        + data.block.street.id + "' data-owner='" + data.owner.id + "' data-area='" + data.area
                         + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
@@ -224,7 +226,8 @@ $(document).ready(function () {
                 '_token': $('input[name=_token]').val(),
                 'number': $('#N').val(),
                 'block_id': $('#B').val(),
-                'tenant_id': $('#O').val()
+                'tenant_id': $('#O').val(),
+                'area': $('#A').val()
             },
             success: function (data) {
                 if ((data.errors)) {
@@ -234,7 +237,7 @@ $(document).ready(function () {
                     $('.error').remove();
                     $('#table').append("<tr class='table-text rowInList" +
                             data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number +
-                            "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name +
+                            "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name+"</div> </td> <td> <div>" + data.area +
                             "</div> </td> <td> <button data-id='" +
                             data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id +
                             "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id
@@ -243,7 +246,7 @@ $(document).ready(function () {
                             "<td> <button data-id='" +
                             data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id
                             + "' data-blocknumber='" + data.block.number + "' data-streetid='"
-                            + data.block.street.id + "' data-owner='" + data.owner.id
+                            + data.block.street.id + "' data-owner='" + data.owner.id + "' data-area='" + data.area
                             + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
                 }
             }
