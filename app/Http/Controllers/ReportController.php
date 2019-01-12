@@ -19,9 +19,26 @@ class ReportController extends Controller {
     //  6)кооперативная ведомость с итогом по каждому виду услуг +
     //  7)ведомость на печать +
     //  8)архивация
+    //  9)льготы в паттерне стратегия 
     public function index() {
         $streets = Street::all();
         return view('reports.index', [
+            'streets' => $streets
+        ]);
+    }
+    
+    public function quietus() {
+        $flats = Flat::all();
+        $serves = Serve::all();
+        foreach ($flats as $flat) {
+            foreach ($serves as $serve) {
+                
+            }
+        }
+        
+        
+        
+        return view('reports.quietus', [
             'streets' => $streets
         ]);
     }

@@ -39,11 +39,24 @@
                     <i class="fa fa-plus">Search quietus</i>
                 </button>
                 <form action="{{ url('quietus/createQuietusForMonth') }}" method="GET">
+                    <br>
                     <button type="submit" class="btn btn-default">
                     <i class="fa fa-plus">+  quietus for current month</i>
                 </button>
                 </form>               
             </div>
+        </div>
+        <div class="form-group">
+            <form action="{{ url('reports/quietus') }}" method="GET">                                                   
+                <div class="form-group">
+                    <br>
+                    <div class="col-sm-offset-3 col-sm-3">
+                        <button type="submit" class="btn btn-default ">
+                            <i class="fa fa-plus">Print quietus</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <h3>Current Quietus</h3>
         @if (count($quietus) > 0)        
