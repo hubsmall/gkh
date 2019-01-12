@@ -60,6 +60,8 @@ Route::post('quietus/search','QuietusController@search');
 
 Route::get('reports','ReportController@index');
 Route::get('reports/crossCalculte','ReportController@crossCalculte');
+Route::get('reports/diagramm','ReportController@diagramm');
+
 
 
 //Route::get('/', function () {
