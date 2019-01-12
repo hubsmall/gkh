@@ -4,6 +4,7 @@
 <div class="wrapper">
     <div class="panel-body"> 
         <div class="form-group">
+            <h3>Перекрестная таблица</h3>
             <form action="{{ url('reports/crossCalculte') }}" method="GET">
                 <label for="dateSearch" class="col-sm-3 control-label">               
                     {{ __('enter date') }}
@@ -13,6 +14,7 @@
                     <input type="hidden" name="_tokenSearch" value="{{ csrf_token() }}">
                 </div>                            
                 <div class="form-group">
+                    <br>
                     <div class="col-sm-offset-3 col-sm-3">
                         <button type="submit" class="btn btn-default">
                             <i class="fa fa-plus">Show report</i>
@@ -24,6 +26,7 @@
         
         
         <div class="form-group">
+            <h3>Диаграмма</h3>
             <form action="{{ url('reports/diagramm') }}" method="GET">
                 <label for="dateSearch" class="col-sm-3 control-label">               
                     {{ __('enter date') }}
@@ -48,6 +51,7 @@
                     </select>
                 </div>             
                 <div class="form-group">
+                    <br>
                     <div class="col-sm-offset-3 col-sm-3">
                         <button type="submit" class="btn btn-default ">
                             <i class="fa fa-plus">Show report</i>
@@ -56,6 +60,48 @@
                 </div>
             </form>
         </div>  
+        
+        
+        
+        
+        <div class="form-group">
+            <h3>Кооперативная ведомость</h3>
+            <form action="{{ url('reports/cooperativeCalculate') }}" method="GET">
+                <label for="dateSearch" class="col-sm-3 control-label">               
+                    {{ __('enter date') }}
+                </label>
+                <div class="col-sm-3">
+                    <input type="date" name="date" id="dateSearch" class="form-control">
+                    <input type="hidden" name="_tokenSearch" value="{{ csrf_token() }}">
+                </div>                                       
+                <div class="form-group">
+                    <br>
+                    <div class="col-sm-offset-3 col-sm-3">
+                        <button type="submit" class="btn btn-default ">
+                            <i class="fa fa-plus">Show report</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div> 
+        
+        
+        <div class="form-group">
+            <h3>Должники</h3>
+            <form action="{{ url('reports/debtors') }}" method="GET">                                                   
+                <div class="form-group">
+                    <br>
+                    <div class="col-sm-offset-3 col-sm-3">
+                        <button type="submit" class="btn btn-default ">
+                            <i class="fa fa-plus">Show report</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div> 
+        
+        
+        
     </div>
 </div>
 

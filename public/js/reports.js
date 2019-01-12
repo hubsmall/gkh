@@ -1,8 +1,3 @@
-$(document).ready(function(){
-$('.btnprn').printPage();
-});
-
-
 $(document).on('change', '#streetIdSearch', function () {
         $.ajax({
             type: 'post',

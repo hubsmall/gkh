@@ -61,6 +61,8 @@ Route::post('quietus/search','QuietusController@search');
 Route::get('reports','ReportController@index');
 Route::get('reports/crossCalculte','ReportController@crossCalculte');
 Route::get('reports/diagramm','ReportController@diagramm');
+Route::get('reports/cooperativeCalculate','ReportController@cooperativeCalculate');
+Route::get('reports/quietus','ReportController@quietus');
 
 
 

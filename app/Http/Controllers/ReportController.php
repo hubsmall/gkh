@@ -14,10 +14,11 @@ class ReportController extends Controller {
     //  1)перекрестный расчет за текущий месяц +
     //  2)диаграмма плата по каждой квартире за текущий месяц +
     //  3)список должников с суммой долга 
-    //  4)квитанция в надлежащем виде на печать (pdf,excel)
+    //  4)квитанция в надлежащем виде на печать
     //  5)диаграмма на печать +
-    //  6)общедоовая ведомость с итогом по каждому виду услуг
-    //  7)ведомость на печать     
+    //  6)кооперативная ведомость с итогом по каждому виду услуг +
+    //  7)ведомость на печать +
+    //  8)архивация
     public function index() {
         $streets = Street::all();
         return view('reports.index', [
@@ -25,6 +26,36 @@ class ReportController extends Controller {
         ]);
     }
 
+    public function cooperativeCalculate(Request $request) {
+        $year = date('Y', strtotime($request->date));
+        $month = date('m', strtotime($request->date));
+        $serves = Serve::all();
+        $flats = Flat::all();
+        $ServeTotals = [];
+        foreach ($serves as $serve) {
+            $total = 0;
+            if ($serve->unit === 'm^2') {
+                foreach ($flats as $flat) {
+                    $total = $total + $serve->tariff * $flat->area;
+                }
+            } else {
+                $indications = Indication::where('serve_id', $serve->id)
+                                ->whereYear('created_at', $year)
+                                ->whereMonth('created_at', $month)->get();
+                foreach ($indications as $indication) {
+                    $total = $total + $serve->tariff * $indication->indication;
+                }
+            }
+            $ServeTotals[$serve->name] = $total;
+        }
+        $ServeTotals['summary'] = array_sum($ServeTotals);
+        return view('reports.cooperativeCalculate', [
+            'ServeTotals' => $ServeTotals,
+            'serves' => $serves,
+            'year' => $year,
+            'month' => $month
+        ]);
+    }
 
     public function getcalculateAttribute($flats, $year, $month) {
         $serves = Serve::all();
@@ -48,7 +79,7 @@ class ReportController extends Controller {
             }
             $flatsSums[] = $total;
         }
-        return $flatsSums;
+        return $flatsSums;      
     }
 
     public function diagramm(Request $request) {
@@ -72,7 +103,6 @@ class ReportController extends Controller {
     public function crossCalculte(Request $request) {
         $year = date('Y', strtotime($request->date));
         $month = date('m', strtotime($request->date));
-        dd($request->query);
         $flats = Flat::with('block.street')->get();
         $serves = Serve::all();
         $table = [];
@@ -84,7 +114,7 @@ class ReportController extends Controller {
                     $indication = Indication::where('flat_id', $flat->id)
                                     ->where('serve_id', $serve->id)
                                     ->whereYear('created_at', $year)
-                                    ->whereMonth('created_at', $month)->first();                    
+                                    ->whereMonth('created_at', $month)->first();
                     $calc = $indication->indication * $serve->tariff;
                 } else {
                     $calc = $flat->area * $serve->tariff;
