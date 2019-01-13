@@ -7,14 +7,15 @@ use App\models\Flat;
 use App\models\Serve;
 use App\models\Indication;
 use App\models\Street;
+use App\models\Quietu;
 use App\Charts\flatPays;
 
 class ReportController extends Controller {
 
     //  1)перекрестный расчет за текущий месяц +
     //  2)диаграмма плата по каждой квартире за текущий месяц +
-    //  3)список должников с суммой долга 
-    //  4)квитанция в надлежащем виде на печать
+    //  3)список должников с суммой долга  +
+    //  4)квитанция в надлежащем виде на печать +
     //  5)диаграмма на печать +
     //  6)кооперативная ведомость с итогом по каждому виду услуг +
     //  7)ведомость на печать +
@@ -24,6 +25,14 @@ class ReportController extends Controller {
         $streets = Street::all();
         return view('reports.index', [
             'streets' => $streets
+        ]);
+    }
+    
+    public function debtors() {       
+        $unpaidQuietus = Quietu::where('pay_status', 0)->pluck('flat_id');
+        $flatsDebtors = Flat::with('block.street','owner')->find($unpaidQuietus);
+        return view('reports.debtors', [
+            'flatsDebtors' => $flatsDebtors
         ]);
     }
     
