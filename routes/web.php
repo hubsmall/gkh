@@ -64,6 +64,7 @@ Route::get('reports/diagramm','ReportController@diagramm');
 Route::get('reports/cooperativeCalculate','ReportController@cooperativeCalculate');
 Route::get('reports/quietus','ReportController@quietus');
 Route::get('reports/debtors','ReportController@debtors');
+Route::get('reports/archivation','ReportController@archivation');
 
 
 

@@ -28,6 +28,16 @@ class ReportController extends Controller {
         ]);
     }
     
+    public function archivation() {
+        $todayYear = date("Y");       
+        $oldQuietus = Quietu::where('created_at','<',$todayYear)
+                ->where('pay_status', 1)
+                ->get();
+        \Storage::disk('local')->put($todayYear . '.json', json_encode($oldQuietus));
+        
+        return 1;
+    }
+    
     public function debtors() {       
         $unpaidQuietus = Quietu::where('pay_status', 0)->pluck('flat_id');
         $flatsDebtors = Flat::with('block.street','owner')->find($unpaidQuietus);
