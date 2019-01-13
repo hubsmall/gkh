@@ -28,18 +28,15 @@ class ReportController extends Controller {
     }
     
     public function quietus() {
-        $flats = Flat::all();
+        $flats = Flat::with('owner','block.street')->get();
         $serves = Serve::all();
-        foreach ($flats as $flat) {
-            foreach ($serves as $serve) {
-                
-            }
-        }
-        
-        
+        $indicationServes = $serves->where('unit', '!==', 'm^2');
+        $areaServes = $serves->where('unit', 'm^2');
         
         return view('reports.quietus', [
-            'streets' => $streets
+            'flats' => $flats,
+            'indicationServes' => $indicationServes,
+            'areaServes' => $areaServes
         ]);
     }
 
