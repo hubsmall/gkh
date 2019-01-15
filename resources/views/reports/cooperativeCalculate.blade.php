@@ -3,7 +3,7 @@
 @section('content')
 <div class="wrapper">
     <div class="panel-body">            
-        <h3>Report {{ $month }}/{{ $year }}</h3>
+        <h3>Total report in serves {{ $month }}/{{ $year }}</h3>
         @if (count($ServeTotals) > 0)        
         <table class="table table-striped task-table" id="table">
             <thead>

@@ -31,7 +31,6 @@ $(document).ready(function () {
 
     $(document).on('change', '#S', function () {
         addBlockSelect();
-       
     });
     $(document).on('change', '#streetIdSearch', function () {
         $.ajax({
@@ -56,7 +55,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $(document).on('click', '.addElement', function () {
         $('#footer_action_button').text(" Add");
         $('#footer_action_button').addClass('glyphicon-check');
@@ -69,18 +67,19 @@ $(document).ready(function () {
         $('.modal-title').text('Add');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        //$('#I').val($(this).data(''));
         $('#N').val('');
         $('#myModal').modal('show');
-
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
+        
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
+        }else{
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
         }
     });
-
     $(document).on('click', '.updateElement', function () {
         $('#footer_action_button').text(" Update");
         $('#footer_action_button').addClass('glyphicon-check');
@@ -98,9 +97,8 @@ $(document).ready(function () {
         $('#O').val($(this).data('owner'));
         $('#S').val($(this).data('streetid'));
         $('#A').val($(this).data('area'));
-        addBlockSelect($(this).data('blockid'));        
+        addBlockSelect($(this).data('blockid'));
         $('#myModal').modal('show');
-
         var nameInput = $('#N').val().length;
         if (nameInput === 0) {
             $('#N').css("border", "2px solid red");
@@ -108,7 +106,6 @@ $(document).ready(function () {
             $('#N').css("border", "2px solid green");
         }
     });
-
     $(document).on('click', '.deleteElement', function () {
         $('#footer_action_button').text(" Delete");
         $('#footer_action_button').removeClass('glyphicon-check');
@@ -125,7 +122,6 @@ $(document).ready(function () {
         $('.dname').html($(this).data('name'));
         $('#myModal').modal('show');
     });
-
     $(document).on('click', '.search', function () {
         $.ajax({
             type: 'post',
@@ -141,7 +137,7 @@ $(document).ready(function () {
                 $.each(data.result, function (index, item) {
                     newTable += "<tr class='table-text rowInList" +
                             item.id + "'> <td> <div>" + item.number + "</div> </td> <td> <div>" + item.block.number +
-                            "</div> </td> <td> <div>" + item.block.street.name + "</div> </td> <td> <div>" + item.owner.name +"</div> </td> <td> <div>" + item.area +
+                            "</div> </td> <td> <div>" + item.block.street.name + "</div> </td> <td> <div>" + item.owner.name + "</div> </td> <td> <div>" + item.area +
                             "</div> </td> <td> <button data-id='" +
                             item.id + "' data-name='" + item.number + "' data-blockid='" + item.block.id +
                             "' data-blocknumber='" + item.block.number + "' data-streetid='" + item.block.street.id
@@ -157,10 +153,7 @@ $(document).ready(function () {
                 $('.tbody').replaceWith(newTable);
             }
         });
-
     });
-
-
     $('.modal-footer').on('click', '.edit', function () {
         $.ajax({
             type: 'post',
@@ -175,7 +168,7 @@ $(document).ready(function () {
             success: function (data) {
                 $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
                         data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number +
-                        "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name+"</div> </td> <td> <div>" + data.area +
+                        "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name + "</div> </td> <td> <div>" + data.area +
                         "</div> </td> <td> <button data-id='" +
                         data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id +
                         "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id
@@ -188,7 +181,6 @@ $(document).ready(function () {
                         + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
-
     });
     $(".inputValidation").change(function () {
         var valueLength = this.value.length;
@@ -197,13 +189,15 @@ $(document).ready(function () {
         } else {
             $(this).css("border", "2px solid green");
         }
-        if ($('#N').val().length === 0) {
+        
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
             $('.actionBtn').prop('disabled', true);
-        } else {
+        }else{
             $('.actionBtn').prop('disabled', false);
         }
     });
-
     $('.modal-footer').on('click', '.delete', function () {
         $.ajax({
             type: 'post',
@@ -217,7 +211,6 @@ $(document).ready(function () {
             }
         });
     });
-
     $('.modal-footer').on('click', '.add', function () {
         $.ajax({
             type: 'post',
@@ -237,7 +230,7 @@ $(document).ready(function () {
                     $('.error').remove();
                     $('#table').append("<tr class='table-text rowInList" +
                             data.id + "'> <td> <div>" + data.number + "</div> </td> <td> <div>" + data.block.number +
-                            "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name+"</div> </td> <td> <div>" + data.area +
+                            "</div> </td> <td> <div>" + data.block.street.name + "</div> </td> <td> <div>" + data.owner.name + "</div> </td> <td> <div>" + data.area +
                             "</div> </td> <td> <button data-id='" +
                             data.id + "' data-name='" + data.number + "' data-blockid='" + data.block.id +
                             "' data-blocknumber='" + data.block.number + "' data-streetid='" + data.block.street.id
@@ -255,5 +248,4 @@ $(document).ready(function () {
         $('#B').val('');
         $('#O').val('');
     });
-
 });

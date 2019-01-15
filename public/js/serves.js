@@ -1,5 +1,37 @@
 $(document).ready(function () {
 
+
+    $(document).on('click', '.search', function () {
+        $.ajax({
+            type: 'post',
+            url: 'serves/search',
+            data: {
+                '_token': $('input[name=_tokenSearch]').val(),
+                'name': $('#nameSearch').val(),
+                'unit': $('#unitSearch').val(),
+            },
+            success: function (data) {
+                var newTable = "<tbody class='tbody'>";
+                $.each(data.result, function (index, item) {
+                    newTable += "<tr class='table-text rowInList" +
+                        item.id + "'> <td> <div>" + item.name + "</div> </td> <td> <div>" + item.unit
+                        + "</div> </td> <td> <div>" + item.tariff + "</div> </td> <td> <button data-id='" +
+                        item.id + "' data-name='" + item.name + "' data-unit='" + item.unit + "' data-tariff='"
+                        + item.tariff +
+                        "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                        "<td> <button data-id='" + item.id + "' data-name='" + item.name + "' data-unit='"
+                        + item.unit + "' data-tariff='" + item.tariff +
+                        "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
+                });
+                newTable += "</tbody>";
+                $('.tbody').replaceWith(newTable);
+            }
+        });
+
+    });
+
+
+
     $(document).on('click', '.addElement', function () {
         $('#footer_action_button').text(" Add");
         $('#footer_action_button').addClass('glyphicon-check');
@@ -12,15 +44,19 @@ $(document).ready(function () {
         $('.modal-title').text('Add');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        //$('#I').val($(this).data(''));
         $('#N').val('');
+        $('#U').val('');
+        $('#T').val('');
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
+        }else{
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
         }
     });
 
@@ -42,12 +78,13 @@ $(document).ready(function () {
         $('#T').val($(this).data('tariff'));
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
-        }
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        }); 
     });
 
     $(document).on('click', '.deleteElement', function () {
@@ -59,6 +96,7 @@ $(document).ready(function () {
         $('.actionBtn').removeClass('btn-success');
         $('.actionBtn').addClass('btn-danger');
         $('.actionBtn').addClass('delete');
+        $('.actionBtn').prop('disabled', false);
         $('.modal-title').text('Delete');
         $('.did').text($(this).data('id'));
         $('.deleteContent').show();
@@ -80,14 +118,14 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
-                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.unit 
-                            + "</div> </td> <td> <div>" + data.tariff + "</div> </td> <td> <button data-id='" +
-                            data.id + "' data-name='" + data.name + "' data-unit='" + data.unit +  "' data-tariff='" 
-                            + data.tariff +
-                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                            "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-unit='" 
-                            + data.unit + "' data-tariff='" + data.tariff +
-                            "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                        data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.unit
+                        + "</div> </td> <td> <div>" + data.tariff + "</div> </td> <td> <button data-id='" +
+                        data.id + "' data-name='" + data.name + "' data-unit='" + data.unit + "' data-tariff='"
+                        + data.tariff +
+                        "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                        "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-unit='"
+                        + data.unit + "' data-tariff='" + data.tariff +
+                        "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
 
@@ -99,10 +137,18 @@ $(document).ready(function () {
         } else {
             $(this).css("border", "2px solid green");
         }
-        //alert($('#chanelN').val().length+"----"+$('#chanelD').val().length);    
-        if ($('#N').val().length === 0) {
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        });
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
             $('.actionBtn').prop('disabled', true);
-        } else {
+        }else{
             $('.actionBtn').prop('disabled', false);
         }
     });
@@ -138,12 +184,12 @@ $(document).ready(function () {
                 } else {
                     $('.error').remove();
                     $('#table').append("<tr class='table-text rowInList" +
-                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.unit 
+                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.unit
                             + "</div> </td> <td> <div>" + data.tariff + "</div> </td> <td> <button data-id='" +
-                            data.id + "' data-name='" + data.name + "' data-unit='" + data.unit +  "' data-tariff='" 
+                            data.id + "' data-name='" + data.name + "' data-unit='" + data.unit + "' data-tariff='"
                             + data.tariff +
                             "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                            "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-unit='" 
+                            "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-unit='"
                             + data.unit + "' data-tariff='" + data.tariff +
                             "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
                 }

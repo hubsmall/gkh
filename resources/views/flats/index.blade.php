@@ -109,8 +109,8 @@
                             </div>
                             <label class="control-label col-sm-2" for="O">Owner:</label>
                             <div class="col-sm-10">                      
-                                <select class="custom-select mr-sm-2" id="O"> 
-                                    <option selected="">choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="O"> 
+                                    <option selected="" value="">choose</option>
                                     @foreach ($tenants as $tenant)
                                     <option value="{{$tenant->id}}">{{$tenant->name}}</option>
                                     @endforeach
@@ -122,17 +122,17 @@
                             </div>
                             <label class="control-label col-sm-2" for="S">Streets</label>
                             <div class="col-sm-10">
-                                <select class="custom-select mr-sm-2" id="S"> 
-                                    <option selected="">choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="S"> 
+                                    <option selected="" value="">choose</option>
                                     @foreach ($streets as $street)
                                     <option value="{{$street->id}}">{{$street->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <label class="control-label col-sm-2" for="B">Blocks</label>
+                            <label class="control-label col-sm-2 " for="B">Blocks</label>
                             <div class="col-sm-10">
                                 <select class="custom-select mr-sm-2" id="B"> 
-                                    <option>choose</option>
+                                
                                 </select>
                             </div>
 

@@ -89,8 +89,8 @@
                             </div>
                             <label class="control-label col-sm-2" for="S">Streets</label>
                             <div class="col-sm-10">
-                                <select class="custom-select mr-sm-2" id="S">
-                                    
+                                <select class="custom-select mr-sm-2 inputValidation" id="S">
+                                    <option selected="" value="">choose</option>
                                     @foreach ($streets as $street)
                                     <option value="{{$street->id}}">{{$street->name}}</option>
                                     @endforeach

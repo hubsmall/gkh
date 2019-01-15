@@ -3,7 +3,7 @@
 @section('content')
 <div class="wrapper">
     <div class="panel-body">            
-        <h3>Report</h3>
+        <h3>Cross-calculate report</h3>
         @if (count($table) > 0)        
         <table class="table table-striped task-table" id="table">
             <thead>

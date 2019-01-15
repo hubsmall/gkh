@@ -54,7 +54,7 @@ Route::post('privileged/search','PrivilegedController@search');
 
 Route::get('quietus','QuietusController@index');
 Route::post('quietus/update','QuietusController@update');
-Route::get('quietus/createQuietusForMonth','QuietusController@createQuietusForMonth');
+Route::post('quietus/store','QuietusController@store');
 Route::post('quietus/destroy','QuietusController@destroy');
 Route::post('quietus/search','QuietusController@search');
 
@@ -65,6 +65,7 @@ Route::get('reports/cooperativeCalculate','ReportController@cooperativeCalculate
 Route::get('reports/quietus','ReportController@quietus');
 Route::get('reports/debtors','ReportController@debtors');
 Route::get('reports/archivation','ReportController@archivation');
+Route::get('reports/about','ReportController@about');
 
 
 

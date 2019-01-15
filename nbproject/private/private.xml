@@ -12,15 +12,13 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Tenant.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Quietu.php</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Privilege.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/models/Flat.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/routes/web.php</file>
+            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/reports/debtors.blade.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/ReportController.php</file>
             <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/reports/index.blade.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/quietus/index.blade.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/BlockController.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/resources/views/reports/quietus.blade.php</file>
-            <file>file:/D:/OSpanel/OSPanel/domains/gkh.loc/app/Http/Controllers/QuietusController.php</file>
         </group>
     </open-files>
 </project-private>

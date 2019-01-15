@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Indication extends Model
 {
-    protected $fillable = ['indication', 'serve_id', 'flat_id'];
+    protected $fillable = ['indication', 'serve_id', 'flat_id', 'date'];
     
     public function serve() {
         return $this->belongsTo(Serve::class, 'serve_id');

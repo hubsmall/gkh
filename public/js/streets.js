@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     $(document).on('click', '.addElement', function () {
-        //alert($(this).data('chanelplaylists'));
         $('#footer_action_button').text(" Add");
         $('#footer_action_button').addClass('glyphicon-check');
         $('#footer_action_button').removeClass('glyphicon-trash');
@@ -13,13 +12,13 @@ $(document).ready(function () {
         $('.modal-title').text('Add');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        //$('#I').val($(this).data(''));
         $('#N').val('');
         $('#myModal').modal('show');
 
         var nameInput = $('#N').val();
         if (nameInput < 3) {
             $('#N').css("border", "2px solid red");
+            $('.actionBtn').prop('disabled', true);
         } else {
             $('#N').css("border", "2px solid green");
         }

@@ -11,7 +11,8 @@ $(document).ready(function () {
             success: function (data) {
                 var newSelect = "";
                 if (data.result.length !== 0) {
-                    newSelect = "<select class='custom-select mr-sm-2' id='B'>";
+                    newSelect = "<select class='custom-select mr-sm-2 inputValidation' id='B'>";
+                    newSelect += "<option selected value=''>choose</option>";
                     $.each(data.result, function (index, item) {
                         if (blockid && item.id === blockid) {
                             newSelect += "<option selected value='" + item.id + "'>" + item.number + "</option>";
@@ -21,7 +22,7 @@ $(document).ready(function () {
                     });
                     newSelect += " </select>";
                 } else {
-                    newSelect = "<select disabled class='custom-select mr-sm-2' id='B'></select>";
+                    newSelect = "<select disabled class='custom-select mr-sm-2 inputValidation' id='B'></select>";
                 }
                 $('#B').replaceWith(newSelect);
             }
@@ -39,7 +40,7 @@ $(document).ready(function () {
             success: function (data) {
                 var newSelect = "";
                 if (data.result.length !== 0) {
-                    newSelect = "<select class='custom-select mr-sm-2' id='F'>";
+                    newSelect = "<select class='custom-select mr-sm-2 inputValidation' id='F'>";
                     $.each(data.result, function (index, item) {
                         if (flatid && item.id === flatid) {
                             newSelect += "<option selected value='" + item.id + "'>" + item.number + "</option>";
@@ -49,7 +50,7 @@ $(document).ready(function () {
                     });
                     newSelect += " </select>";
                 } else {
-                    newSelect = "<select disabled class='custom-select mr-sm-2' id='F'></select>";
+                    newSelect = "<select disabled class='custom-select mr-sm-2 inputValidation' id='F'></select>";
                 }
                 $('#F').replaceWith(newSelect);
             }
@@ -125,13 +126,21 @@ $(document).ready(function () {
         $('.deleteContent').hide();
         $('.form-horizontal').show();
         $('#N').val('');
+        $('#D').val('');
+        $('#S').val('');
+        $('#Str').val('');
+        $('#B').val('');
+        $('#F').val('');
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
+        }else{
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
         }
     });
 
@@ -149,19 +158,21 @@ $(document).ready(function () {
         $('.form-horizontal').show();
         $('#I').val($(this).data('id'));
         $('#N').val($(this).data('name'));
+        $('#D').val($(this).data('date'));
         $('#S').val($(this).data('serveid'));
         $('#Str').val($(this).data('streetid'));
         addBlockSelect($(this).data('blockid'));       
         $('#B').val($(this).data('blockid'));      
         addFlatSelect($(this).data('flatid'));
-        $('#myModal').modal('show');
-
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
-        }
+         
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        });
+        $('#myModal').modal('show'); 
     });
 
     $(document).on('click', '.deleteElement', function () {
@@ -173,6 +184,7 @@ $(document).ready(function () {
         $('.actionBtn').removeClass('btn-success');
         $('.actionBtn').addClass('btn-danger');
         $('.actionBtn').addClass('delete');
+        $('.actionBtn').prop('disabled', false);
         $('.modal-title').text('Delete');
         $('.did').text($(this).data('id'));
         $('.deleteContent').show();
@@ -187,7 +199,7 @@ $(document).ready(function () {
             url: 'indications/search',
             data: {
                 '_token': $('input[name=_tokenSearch]').val(),
-                'created_at': $('#dateSearch').val(),
+                'date': $('#dateSearch').val(),
                 'street_id': $('#streetIdSearch').val(),
                 'block_id': $('#blockIdSearch').val(),
                 'flat_id': $('#flatIdSearch').val()
@@ -196,17 +208,18 @@ $(document).ready(function () {
                 var newTable = "<tbody class='tbody'>";
                 $.each(data.result, function (index, item) {
                     newTable += "<tr class='table-text rowInList" +
-                            item.id + "'> <td> <div>" + item.indication + "</div> </td> <td> <div>" + item.serve.name +
-                            "</div> </td> <td> <div>" + item.flat.number + "</div> </td> <td> <div>" + item.flat.block.number +
-                            "</div> </td> <td> <div>" + item.flat.block.street.name +
-                            "</div> </td> <td> <div>" + item.created_at +
-                            "</div> </td> <td> <button data-id='" +
-                            item.id + "' data-name='" + item.indication +
-                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                            "<td> <button data-id='" + item.id + "' data-name='" + item.indication + "' data-serveid='" + item.serve.id +
-                            "' data-flatid='" + item.flat.id
-                            + "' data-blockid='" + item.flat.block.id
-                            + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
+                        item.id + "'> <td> <div>" + item.indication + "</div> </td> <td> <div>" + item.serve.name +
+                        "</div> </td> <td> <div>" + item.flat.number + "</div> </td> <td> <div>" + item.flat.block.number +
+                        "</div> </td> <td> <div>" + item.flat.block.street.name +
+                        "</div> </td> <td> <div>" + item.date +
+                        "</div> </td> <td> <button data-id='" +
+                        item.id + "' data-name='" + item.indication +
+                        "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                        "<td> <button data-id='" + item.id + "' data-name='" + item.indication + "' data-serveid='" + item.serve.id +
+                        "' data-flatid='" + item.flat.id
+                        + "' data-blockid='" + item.flat.block.id + "' data-streetid='" + item.flat.block.street.id
+                        + "' data-date='" + item.date
+                        + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>";
                 });
                 newTable += "</tbody>";
                 $('.tbody').replaceWith(newTable);
@@ -225,20 +238,22 @@ $(document).ready(function () {
                 'id': $('#I').val(),
                 'indication': $('#N').val(),
                 'flat_id': $('#F').val(),
-                'serve_id': $('#S').val()
+                'serve_id': $('#S').val(),
+                'date': $('#D').val()
             },
             success: function (data) {
                 $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
                         data.id + "'> <td> <div>" + data.indication + "</div> </td> <td> <div>" + data.serve.name +
                         "</div> </td> <td> <div>" + data.flat.number + "</div> </td> <td> <div>" + data.flat.block.number +
                         "</div> </td> <td> <div>" + data.flat.block.street.name +
-                        "</div> </td> <td> <div>" + data.created_at +
+                        "</div> </td> <td> <div>" + data.date +
                         "</div> </td> <td> <button data-id='" +
                         data.id + "' data-name='" + data.indication +
                         "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
                         "<td> <button data-id='" + data.id + "' data-name='" + data.indication + "' data-serveid='" + data.serve.id +
                         "' data-flatid='" + data.flat.id
-                        + "' data-blockid='" + data.flat.block.id
+                        + "' data-blockid='" + data.flat.block.id + "' data-streetid='" + data.flat.block.street.id
+                        + "' data-date='" + data.date
                         + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
             }
         });
@@ -251,9 +266,18 @@ $(document).ready(function () {
         } else {
             $(this).css("border", "2px solid green");
         }
-        if ($('#N').val().length === 0) {
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        });
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
             $('.actionBtn').prop('disabled', true);
-        } else {
+        }else{
             $('.actionBtn').prop('disabled', false);
         }
     });
@@ -280,7 +304,8 @@ $(document).ready(function () {
                 '_token': $('input[name=_token]').val(),
                 'indication': $('#N').val(),
                 'flat_id': $('#F').val(),
-                'serve_id': $('#S').val()
+                'serve_id': $('#S').val(),
+                'date': $('#D').val()
             },
             success: function (data) {
                 if ((data.errors)) {
@@ -289,23 +314,25 @@ $(document).ready(function () {
                 } else {
                     $('.error').remove();
                     $('#table').append("<tr class='table-text rowInList" +
-                            data.id + "'> <td> <div>" + data.indication + "</div> </td> <td> <div>" + data.serve.name +
-                            "</div> </td> <td> <div>" + data.flat.number + "</div> </td> <td> <div>" + data.flat.block.number +
-                            "</div> </td> <td> <div>" + data.flat.block.street.name +
-                            "</div> </td> <td> <div>" + data.created_at +
-                            "</div> </td> <td> <button data-id='" +
-                            data.id + "' data-name='" + data.indication +
-                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                            "<td> <button data-id='" + data.id + "' data-name='" + data.indication + "' data-serveid='" + data.serve.id +
-                            "' data-flatid='" + data.flat.id
-                            + "' data-blockid='" + data.flat.block.id + "' data-streetid='" + data.flat.block.street.id
-                            + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                        data.id + "'> <td> <div>" + data.indication + "</div> </td> <td> <div>" + data.serve.name +
+                        "</div> </td> <td> <div>" + data.flat.number + "</div> </td> <td> <div>" + data.flat.block.number +
+                        "</div> </td> <td> <div>" + data.flat.block.street.name +
+                        "</div> </td> <td> <div>" + data.date +
+                        "</div> </td> <td> <button data-id='" +
+                        data.id + "' data-name='" + data.indication +
+                        "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                        "<td> <button data-id='" + data.id + "' data-name='" + data.indication + "' data-serveid='" + data.serve.id +
+                        "' data-flatid='" + data.flat.id
+                        + "' data-blockid='" + data.flat.block.id + "' data-streetid='" + data.flat.block.street.id
+                        + "' data-date='" + data.date
+                        + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
                 }
             }
         });
         $('#N').val('');
         $('#F').val('');
         $('#S').val('');
+        $('#D').val('');
     });
 
 });

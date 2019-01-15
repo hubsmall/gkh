@@ -12,15 +12,18 @@ $(document).ready(function () {
         $('.modal-title').text('Add');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        //$('#I').val($(this).data(''));
         $('#N').val('');
+        $('#S').val('');
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
+        }else{
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
         }
     });
 
@@ -41,12 +44,15 @@ $(document).ready(function () {
         $('#S').val($(this).data('streetid'));
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
-        }
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
+        }else{
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
+        } 
     });
 
     $(document).on('click', '.deleteElement', function () {
@@ -118,11 +124,12 @@ $(document).ready(function () {
             $(this).css("border", "2px solid red");
         } else {
             $(this).css("border", "2px solid green");
-        }
-        //alert($('#chanelN').val().length+"----"+$('#chanelD').val().length);    
-        if ($('#N').val().length === 0) {
+        }  
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
             $('.actionBtn').prop('disabled', true);
-        } else {
+        }else{
             $('.actionBtn').prop('disabled', false);
         }
     });

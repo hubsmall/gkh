@@ -28,7 +28,7 @@ class Flat extends Model {
     public function getIndicationForServe($serve) {
         $indication = Indication::where('flat_id', $this->id)
                         ->where('serve_id', $serve->id)
-                        ->orderBy('created_at', 'desc')->first();
+                        ->orderBy('created_at', 'desc')->get();
         return $indication->indication;
     }
 

@@ -12,8 +12,19 @@ $(document).ready(function () {
         $('.modal-title').text('Add');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        $('#N').val('');
+        $('#A').val('');
+        $('#O').val('');
         $('#myModal').modal('show');
+        
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
+        }else{
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
+        }
 
     });
 
@@ -33,6 +44,14 @@ $(document).ready(function () {
         $('#O').val($(this).data('ownerid'));
         $('#A').val($(this).data('advantageid'));        
         $('#myModal').modal('show');
+        
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        });
       
     });
 
@@ -45,6 +64,7 @@ $(document).ready(function () {
         $('.actionBtn').removeClass('btn-success');
         $('.actionBtn').addClass('btn-danger');
         $('.actionBtn').addClass('delete');
+        $('.actionBtn').prop('disabled', false);
         $('.modal-title').text('Delete');
         $('.did').text($(this).data('id'));
         $('.deleteContent').show();
@@ -106,9 +126,18 @@ $(document).ready(function () {
         } else {
             $(this).css("border", "2px solid green");
         }
-        if ($('#N').val().length === 0) {
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        });
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
             $('.actionBtn').prop('disabled', true);
-        } else {
+        }else{
             $('.actionBtn').prop('disabled', false);
         }
     });

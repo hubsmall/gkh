@@ -13,7 +13,7 @@
     <a href="{{url('advantages') }}" class="list-group-item list-group-item-action list-group-item-info">ЛЬГОТЫ</a>
     <a href="{{url('reports') }}" class="list-group-item list-group-item-action list-group-item-secondary">ОТЧЕТНОСТЬ</a>
     <a href="#" id="archive" class="list-group-item list-group-item-action list-group-item-secondary">АРХИВАЦИЯ</a>
-    <a href="#" class="list-group-item list-group-item-action list-group-item-success">О ПРОГРАММЕ</a>
+    <a href="{{url('reports/about') }}" class="list-group-item list-group-item-action list-group-item-success">О ПРОГРАММЕ</a>
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">

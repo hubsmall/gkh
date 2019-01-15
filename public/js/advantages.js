@@ -12,15 +12,18 @@ $(document).ready(function () {
         $('.modal-title').text('Add');
         $('.deleteContent').hide();
         $('.form-horizontal').show();
-        //$('#I').val($(this).data(''));
         $('#N').val('');
+        $('#P').val('');
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
+            $('.actionBtn').prop('disabled', true);
+            $('.inputValidation').css("border", "2px solid red");
         } else {
-            $('#N').css("border", "2px solid green");
+            $('.actionBtn').prop('disabled', false);
+            $('.inputValidation').css("border", "2px solid green");
         }
     });
 
@@ -41,12 +44,13 @@ $(document).ready(function () {
         $('#P').val($(this).data('percent'));
         $('#myModal').modal('show');
 
-        var nameInput = $('#N').val().length;
-        if (nameInput === 0) {
-            $('#N').css("border", "2px solid red");
-        } else {
-            $('#N').css("border", "2px solid green");
-        }
+        $('.inputValidation').each(function (i, obj) {
+            if (obj.value.length === 0) {
+                $(obj).css("border", "2px solid red");
+            } else {
+                $(obj).css("border", "2px solid green");
+            }
+        });
     });
 
     $(document).on('click', '.deleteElement', function () {
@@ -58,6 +62,7 @@ $(document).ready(function () {
         $('.actionBtn').removeClass('btn-success');
         $('.actionBtn').addClass('btn-danger');
         $('.actionBtn').addClass('delete');
+        $('.actionBtn').prop('disabled', false);
         $('.modal-title').text('Delete');
         $('.did').text($(this).data('id'));
         $('.deleteContent').show();
@@ -67,26 +72,29 @@ $(document).ready(function () {
     });
 
     $('.modal-footer').on('click', '.edit', function () {
-        $.ajax({
-            type: 'post',
-            url: 'advantages/update',
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'id': $('#I').val(),
-                'name': $('#N').val(),
-                'percent': $('#P').val()
-            },
-            success: function (data) {
-                $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
-                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.percent 
+        if ($('#P').val() > 100) {
+            alert('Percent must be in [1;100]');
+        } else {
+            $.ajax({
+                type: 'post',
+                url: 'advantages/update',
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'id': $('#I').val(),
+                    'name': $('#N').val(),
+                    'percent': $('#P').val() / 100
+                },
+                success: function (data) {
+                    $('.rowInList' + data.id).replaceWith("<tr class='table-text rowInList" +
+                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.percent
                             + "</div> </td> <td> <button data-id='" +
                             data.id + "' data-name='" + data.name + "' data-percent='" + data.percent +
                             "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                            "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-percent='" 
+                            "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-percent='"
                             + data.percent + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
-            }
-        });
-
+                }
+            });
+        }
     });
     $(".inputValidation").change(function () {
         var valueLength = this.value.length;
@@ -95,8 +103,9 @@ $(document).ready(function () {
         } else {
             $(this).css("border", "2px solid green");
         }
-        //alert($('#chanelN').val().length+"----"+$('#chanelD').val().length);    
-        if ($('#N').val().length === 0) {
+        if ($(".inputValidation").length !== $('.inputValidation').filter(function () {
+            return $.trim(this.value)
+        }).length) {
             $('.actionBtn').prop('disabled', true);
         } else {
             $('.actionBtn').prop('disabled', false);
@@ -118,30 +127,34 @@ $(document).ready(function () {
     });
 
     $('.modal-footer').on('click', '.add', function () {
-        $.ajax({
-            type: 'post',
-            url: 'advantages/store',
-            data: {
-                '_token': $('input[name=_token]').val(),
-                'name': $('#N').val(),
-                'percent': $('#P').val()
-            },
-            success: function (data) {
-                if ((data.errors)) {
-                    $('.error').removeClass('hidden');
-                    $('.error').text(data.errors.number);
-                } else {
-                    $('.error').remove();
-                    $('#table').append("<tr class='table-text rowInList" +
-                            data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.percent 
-                            + "</div> </td> <td> <button data-id='" +
-                            data.id + "' data-name='" + data.name + "' data-percent='" + data.percent +
-                            "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
-                            "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-percent='" 
-                            + data.percent + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+        if ($('#P').val() > 100) {
+            alert('Percent must be in [1;100]');
+        } else {
+            $.ajax({
+                type: 'post',
+                url: 'advantages/store',
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'name': $('#N').val(),
+                    'percent': $('#P').val()/100
+                },
+                success: function (data) {
+                    if ((data.errors)) {
+                        $('.error').removeClass('hidden');
+                        $('.error').text(data.errors.number);
+                    } else {
+                        $('.error').remove();
+                        $('#table').append("<tr class='table-text rowInList" +
+                                data.id + "'> <td> <div>" + data.name + "</div> </td> <td> <div>" + data.percent
+                                + "</div> </td> <td> <button data-id='" +
+                                data.id + "' data-name='" + data.name + "' data-percent='" + data.percent +
+                                "' type='submit' class='btn btn-danger deleteElement'> <i class='fa fa-btn fa-trash'>Delete</i></button></td>" +
+                                "<td> <button data-id='" + data.id + "' data-name='" + data.name + "' data-percent='"
+                                + data.percent + "' type='submit' class='btn btn-info updateElement'> <i class='fa fa-btn fa-trash'>Update</i></button></td></tr>");
+                    }
                 }
-            }
-        });
+            });
+        }
         $('#N').val('');
         $('#P').val('');
     });

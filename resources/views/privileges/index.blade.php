@@ -88,8 +88,8 @@
                         <div class="form-group" id="Addform">                           
                             <label class="control-label col-sm-2" for="A">Advantages</label>
                             <div class="col-sm-10">                      
-                                <select class="custom-select mr-sm-2" id="A"> 
-                                    <option selected="">choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="A"> 
+                                    <option value="" selected="">choose</option>
                                     @foreach ($advantages as $advantage)
                                     <option value="{{$advantage->id}}">{{$advantage->name}}</option>
                                     @endforeach
@@ -97,8 +97,8 @@
                             </div>
                             <label class="control-label col-sm-2" for="O">Owners</label>
                             <div class="col-sm-10">
-                                <select class="custom-select mr-sm-2" id="O"> 
-                                    <option selected="">choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="O"> 
+                                    <option value="" selected="">choose</option>
                                     @foreach ($owners as $owner)
                                     <option value="{{$owner->id}}">{{$owner->name}}</option>
                                     @endforeach

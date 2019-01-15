@@ -10,13 +10,13 @@
             <thead>
             <th>street</th><th>block</th><th>flat</th><th>owner</th><th>debt</th></thead>
             <tbody class="tbody">     
-                @foreach ($flatsDebtors as $flat)
+                @foreach ($unpaidQuietus as $unpaidQuietu)
                 <tr class="table-text">
-                    <td><div>{{ $flat->block->street->name }}</div></td> 
-                    <td><div>{{ $flat->block->number }}</div></td>
-                    <td><div>{{ $flat->number }}</div></td>
-                    <td><div>{{ $flat->owner->name }}</div></td>    
-                    <td><div>{{ $flat->debt }}</div></td>
+                    <td><div>{{ $unpaidQuietu->flat->block->street->name }}</div></td> 
+                    <td><div>{{ $unpaidQuietu->flat->block->number }}</div></td>
+                    <td><div>{{ $unpaidQuietu->flat->number }}</div></td>
+                    <td><div>{{ $unpaidQuietu->flat->owner->name }}</div></td>    
+                    <td><div>{{ $unpaidQuietu->calculate }}</div></td>
                 </tr> 
                 @endforeach  
             </tbody>

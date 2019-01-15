@@ -88,7 +88,14 @@
         
         <div class="form-group">
             <h3>Должники</h3>
-            <form action="{{ url('reports/debtors') }}" method="GET">                                                   
+            <form action="{{ url('reports/debtors') }}" method="GET">  
+                <label for="dateSearch" class="col-sm-3 control-label">               
+                    {{ __('enter date') }}
+                </label>
+                <div class="col-sm-3">
+                    <input type="date" name="date" id="dateSearch" class="form-control">
+                    <input type="hidden" name="_tokenSearch" value="{{ csrf_token() }}">
+                </div>
                 <div class="form-group">
                     <br>
                     <div class="col-sm-offset-3 col-sm-3">

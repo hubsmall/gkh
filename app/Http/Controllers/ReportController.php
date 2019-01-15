@@ -19,41 +19,55 @@ class ReportController extends Controller {
     //  5)диаграмма на печать +
     //  6)кооперативная ведомость с итогом по каждому виду услуг +
     //  7)ведомость на печать +
-    //  8)архивация
+    //  8)архивация + 
     //  9)льготы в паттерне стратегия 
+
+
+    public function about() {
+        $streets = Street::all();
+        return view('reports.about', [
+        ]);
+    }
+
     public function index() {
         $streets = Street::all();
         return view('reports.index', [
             'streets' => $streets
         ]);
     }
-    
+
     public function archivation() {
-        $todayYear = date("Y");       
-        $oldQuietus = Quietu::where('created_at','<',$todayYear)
+        $todayYear = date("Y");
+        $oldQuietus = Quietu::where('date', '<', $todayYear)
                 ->where('pay_status', 1)
                 ->get();
         \Storage::disk('local')->put($todayYear . '.json', json_encode($oldQuietus));
-        
+
         return 1;
     }
-    
-    public function debtors() {       
-        $unpaidQuietus = Quietu::where('pay_status', 0)->pluck('flat_id');
-        $flatsDebtors = Flat::with('block.street','owner')->find($unpaidQuietus);
+
+    public function debtors(Request $request) {
+        $year = date('Y', strtotime($request->date));
+        $month = date('m', strtotime($request->date));
+        $unpaidQuietus = Quietu::with('flat.owner', 'flat.block.street')
+                ->where('pay_status', 0)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get();
+        //$flatsDebtors = Flat::with('block.street', 'owner')->find($unpaidQuietus);
         return view('reports.debtors', [
-            'flatsDebtors' => $flatsDebtors
+            'unpaidQuietus' => $unpaidQuietus
         ]);
     }
-    
-    public function quietus() {
-        $flats = Flat::with('owner','block.street')->get();
+
+    public function quietus(Request $request) {
+        $quietu = Quietu::with('flat.owner', 'flat.block.street')->find($request->id);
         $serves = Serve::all();
         $indicationServes = $serves->where('unit', '!==', 'm^2');
         $areaServes = $serves->where('unit', 'm^2');
-        
+
         return view('reports.quietus', [
-            'flats' => $flats,
+            'quietu' => $quietu,
             'indicationServes' => $indicationServes,
             'areaServes' => $areaServes
         ]);
@@ -73,8 +87,8 @@ class ReportController extends Controller {
                 }
             } else {
                 $indications = Indication::where('serve_id', $serve->id)
-                                ->whereYear('created_at', $year)
-                                ->whereMonth('created_at', $month)->get();
+                                ->whereYear('date', $year)
+                                ->whereMonth('date', $month)->get();
                 foreach ($indications as $indication) {
                     $total = $total + $serve->tariff * $indication->indication;
                 }
@@ -104,15 +118,18 @@ class ReportController extends Controller {
             // count on indications
             $indicationServes = $serves->where('unit', '!==', 'm^2');
             foreach ($indicationServes as $indicationServe) {
-                $indication = Indication::where('flat_id', $flat->id)
-                                ->where('serve_id', $indicationServe->id)
-                                ->whereYear('created_at', $year)
-                                ->whereMonth('created_at', $month)->first();
-                $total = $total + $indicationServe->tariff * $indication->indication;
+                $monthIndications = Indication::where('flat_id', $flat->id)
+                        ->where('serve_id', $indicationServe->id)
+                        ->whereYear('date', $year)
+                        ->whereMonth('date', $month)
+                        ->get();
+                foreach ($monthIndications as $monthIndication) {
+                    $total = $total + $indicationServe->tariff * $monthIndication->indication;
+                }
             }
             $flatsSums[] = $total;
         }
-        return $flatsSums;      
+        return $flatsSums;
     }
 
     public function diagramm(Request $request) {
@@ -126,7 +143,6 @@ class ReportController extends Controller {
         }
         $chart->labels($flatLabels);
         $data = self::getcalculateAttribute($flats, $year, $month);
-        //dd($data);
         $chart->dataset($flats[0]->block->street->name . '/' . $flats[0]->block->number, 'bar', $data);
         return view('reports.diagramm', [
             'chart' => $chart
@@ -144,11 +160,14 @@ class ReportController extends Controller {
             foreach ($serves as $serve) {
                 $calc = 0;
                 if ($serve->unit !== 'm^2') {
-                    $indication = Indication::where('flat_id', $flat->id)
-                                    ->where('serve_id', $serve->id)
-                                    ->whereYear('created_at', $year)
-                                    ->whereMonth('created_at', $month)->first();
-                    $calc = $indication->indication * $serve->tariff;
+                    $monthIndications = Indication::where('flat_id', $flat->id)
+                            ->where('serve_id', $serve->id)
+                            ->whereYear('date', $year)
+                            ->whereMonth('date', $month)
+                            ->get();
+                    foreach ($monthIndications as $monthIndication) {
+                        $calc = $calc + $serve->tariff * $monthIndication->indication;
+                    }
                 } else {
                     $calc = $flat->area * $serve->tariff;
                 }

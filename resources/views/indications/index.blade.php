@@ -68,16 +68,10 @@
                             <div>{{ $indication->flat->block->street->name }}</div>                     
                         </td>
                         <td>
-                            <div>{{ $indication->created_at }}</div>                     
+                            <div>{{ $indication->date }}</div>                     
                         </td>
                         <td>                   
                             <button data-id="{{$indication->id}}" data-name="{{$indication->indication}}" 
-                                    data-serveid="{{$indication->serve->id}}"
-                                    data-flatid="{{$indication->flat->id}}"
-                                    data-flatnumber="{{$indication->flat->number}}"
-                                    data-blockid="{{$indication->flat->block->id}}"
-                                    data-blocknumber="{{$indication->flat->block->number}}"
-                                    data-streetid="{{$indication->flat->block->street->id }}"
                                     type="submit" class="btn btn-danger deleteElement">
                                 <i class="fa fa-btn fa-trash"></i>Delete
                             </button>                       
@@ -86,10 +80,9 @@
                             <button data-id="{{$indication->id}}" data-name="{{$indication->indication}}" 
                                     data-serveid="{{$indication->serve->id}}"
                                     data-flatid="{{$indication->flat->id}}"
-                                    data-flatnumber="{{$indication->flat->number}}"
                                     data-blockid="{{$indication->flat->block->id}}"
-                                    data-blocknumber="{{$indication->flat->block->number}}"
                                     data-streetid="{{$indication->flat->block->street->id }}"
+                                    data-date="{{$indication->date}}"
                                     type="submit" class="btn btn-info updateElement">
                                 <i class="fa fa-btn fa-trash"></i>Update
                             </button>                    
@@ -113,25 +106,10 @@
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">                    
                         <div class="form-group" id="Addform">
-                            <label class="control-label col-sm-2" for="N">Indication</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="id" hidden=""  id="I">                          
-                                <input type="number" min="0" name="name" class="form-control inputValidation" id="N">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            </div>
-                            <label class="control-label col-sm-2" for="S">Serves</label>
-                            <div class="col-sm-10">                      
-                                <select class="custom-select mr-sm-2" id="S"> 
-                                    <option selected="">choose</option>
-                                    @foreach ($serves as $serve)
-                                    <option value="{{$serve->id}}">{{$serve->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                             <label class="control-label col-sm-2" for="Str">Streets</label>
                             <div class="col-sm-10">
-                                <select class="custom-select mr-sm-2" id="Str"> 
-                                    <option selected="">choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="Str"> 
+                                    <option value="" selected="">choose</option>
                                     @foreach ($streets as $street)
                                     <option value="{{$street->id}}">{{$street->name}}</option>
                                     @endforeach
@@ -139,17 +117,35 @@
                             </div>
                             <label class="control-label col-sm-2" for="B">Blocks</label>
                             <div class="col-sm-10">
-                                <select class="custom-select mr-sm-2" id="B"> 
-                                    <option>choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="B"> 
+                                    <option value="" selected="">choose</option>
                                 </select>
                             </div>
                             <label class="control-label col-sm-2" for="F">Flats</label>
                             <div class="col-sm-10">
-                                <select class="custom-select mr-sm-2" id="F"> 
-                                    <option>choose</option>
+                                <select class="custom-select mr-sm-2 inputValidation" id="F"> 
+                                    <option value="" selected="">choose</option>
                                 </select>
                             </div>
-
+                            <label class="control-label col-sm-2" for="N">Indication</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="id" hidden=""  id="I">                          
+                                <input type="number" min="0" name="name" class="form-control inputValidation" id="N">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            </div>
+                            <label class="control-label col-sm-2" for="D">Date</label>
+                            <div class="col-sm-10">              
+                                <input type="date" class="form-control inputValidation" id="D">
+                            </div>
+                            <label class="control-label col-sm-2" for="S">Serves</label>
+                            <div class="col-sm-10">                      
+                                <select class="custom-select mr-sm-2 inputValidation" id="S"> 
+                                    <option value="" selected="">choose</option>
+                                    @foreach ($serves as $serve)
+                                    <option value="{{$serve->id}}">{{$serve->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>        
                     </form>
                     <div class="deleteContent">
