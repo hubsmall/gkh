@@ -50,12 +50,14 @@ class ReportController extends Controller {
     public function debtors(Request $request) {
         $year = date('Y', strtotime($request->date));
         $month = date('m', strtotime($request->date));
-        $unpaidQuietus = Quietu::with('flat.owner', 'flat.block.street')
-                ->where('pay_status', 0)
+        $quietusRaw = Quietu::with('flat.owner.privileges.advantage', 'flat.block.street')
                 ->whereYear('date', $year)
                 ->whereMonth('date', $month)
                 ->get();
-        //$flatsDebtors = Flat::with('block.street', 'owner')->find($unpaidQuietus);
+        $unpaidQuietus = collect();
+        foreach ($quietusRaw as $quietu) {
+            $unpaidQuietus->push(new QuietusPresenter($quietu));
+        }
         return view('reports.debtors', [
             'unpaidQuietus' => $unpaidQuietus
         ]);
@@ -66,7 +68,7 @@ class ReportController extends Controller {
         $serves = Serve::all();
         $indicationServes = $serves->where('unit', '!==', 'm^2');
         $areaServes = $serves->where('unit', 'm^2');
-       
+
         return view('reports.quietus', [
             'quietu' => $quietu,
             'indicationServes' => $indicationServes,
@@ -78,20 +80,22 @@ class ReportController extends Controller {
         $year = date('Y', strtotime($request->date));
         $month = date('m', strtotime($request->date));
         $serves = Serve::all();
-        $flats = Flat::all();
         $ServeTotals = [];
+        $quietusRaw = Quietu::with('flat.owner.privileges.advantage', 'flat.block.street')
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get();
+        $quietus = collect();
+        foreach ($quietusRaw as $quietu) {
+            $quietus->push(new QuietusPresenter($quietu));
+        }
         foreach ($serves as $serve) {
             $total = 0;
-            if ($serve->unit === 'm^2') {
-                foreach ($flats as $flat) {
-                    $total = $total + $serve->tariff * $flat->area;
-                }
-            } else {
-                $indications = Indication::where('serve_id', $serve->id)
-                                ->whereYear('date', $year)
-                                ->whereMonth('date', $month)->get();
-                foreach ($indications as $indication) {
-                    $total = $total + $serve->tariff * $indication->indication;
+            foreach ($quietus as $quietu) {
+                if ($serve->unit === 'm^2') {
+                    $total += $quietu->calculateForAreaServeWithPrivileges($serve);
+                } else {
+                    $total += $quietu->calculateForIndicationServeWithPrivileges($serve);
                 }
             }
             $ServeTotals[$serve->name] = $total;
@@ -106,27 +110,20 @@ class ReportController extends Controller {
     }
 
     public function getcalculateAttribute($flats, $year, $month) {
-        $serves = Serve::all();
-        // count on area
-        $areaServes = $serves->where('unit', 'm^2');
         $flatsSums = [];
         foreach ($flats as $flat) {
             $total = 0;
-            $area = $flat->area;
-            foreach ($areaServes as $areaServe) {
-                $total = $total + $areaServe->tariff * $area;
+            $quietusRaw = Quietu::with('flat.owner.privileges.advantage', 'flat.block.street')
+                    ->where('flat_id', $flat->id)
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->get();
+            $quietus = collect();
+            foreach ($quietusRaw as $quietu) {
+                $quietus->push(new QuietusPresenter($quietu));
             }
-            // count on indications
-            $indicationServes = $serves->where('unit', '!==', 'm^2');
-            foreach ($indicationServes as $indicationServe) {
-                $monthIndications = Indication::where('flat_id', $flat->id)
-                        ->where('serve_id', $indicationServe->id)
-                        ->whereYear('date', $year)
-                        ->whereMonth('date', $month)
-                        ->get();
-                foreach ($monthIndications as $monthIndication) {
-                    $total = $total + $indicationServe->tariff * $monthIndication->indication;
-                }
+            foreach ($quietus as $quietu) {
+                $total += $quietu->getCalculationWithPrivileges();
             }
             $flatsSums[] = $total;
         }
@@ -158,19 +155,23 @@ class ReportController extends Controller {
         $table = [];
         foreach ($flats as $flat) {
             $flatArray = [];
+            $quietusRaw = Quietu::with('flat.owner.privileges.advantage', 'flat.block.street')
+                    ->where('flat_id', $flat->id)
+                    ->whereYear('date', $year)
+                    ->whereMonth('date', $month)
+                    ->get();
+            $quietus = collect();
+            foreach ($quietusRaw as $quietu) {
+                $quietus->push(new QuietusPresenter($quietu));
+            }
             foreach ($serves as $serve) {
                 $calc = 0;
-                if ($serve->unit !== 'm^2') {
-                    $monthIndications = Indication::where('flat_id', $flat->id)
-                            ->where('serve_id', $serve->id)
-                            ->whereYear('date', $year)
-                            ->whereMonth('date', $month)
-                            ->get();
-                    foreach ($monthIndications as $monthIndication) {
-                        $calc = $calc + $serve->tariff * $monthIndication->indication;
+                foreach ($quietus as $quietu) {
+                    if ($serve->unit === 'm^2') {
+                        $calc += $quietu->calculateForAreaServeWithPrivileges($serve);
+                    } else {
+                        $calc += $quietu->calculateForIndicationServeWithPrivileges($serve);
                     }
-                } else {
-                    $calc = $flat->area * $serve->tariff;
                 }
                 $flatArray[] = $calc;
             }

@@ -16,7 +16,7 @@
                     <td><div>{{ $unpaidQuietu->flat->block->number }}</div></td>
                     <td><div>{{ $unpaidQuietu->flat->number }}</div></td>
                     <td><div>{{ $unpaidQuietu->flat->owner->name }}</div></td>    
-                    <td><div>{{ $unpaidQuietu->calculate }}</div></td>
+                    <td><div>{{ $unpaidQuietu->getCalculationWithPrivileges() }}</div></td>
                 </tr> 
                 @endforeach  
             </tbody>
