@@ -19,12 +19,10 @@ class Quietu extends Model {
 
     public function month() {
         return date('m', strtotime($this->date));
-        ;
     }
 
     public function year() {
         return date('Y', strtotime($this->date));
-        ;
     }
 
     public function getcalculateAttribute() {

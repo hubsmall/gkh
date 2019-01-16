@@ -12,4 +12,8 @@ class Tenant extends Model
         return $this->hasMany(Flat::class, 'tenant_id');
     }
     
+    public function privileges() {
+        return $this->hasMany(Privilege::class, 'tenant_id');
+    }
+    
 }

@@ -9,6 +9,7 @@ use App\models\Indication;
 use App\models\Street;
 use App\models\Quietu;
 use App\Charts\flatPays;
+use App\Presenters\QuietusPresenter;
 
 class ReportController extends Controller {
 
@@ -61,11 +62,11 @@ class ReportController extends Controller {
     }
 
     public function quietus(Request $request) {
-        $quietu = Quietu::with('flat.owner', 'flat.block.street')->find($request->id);
+        $quietu = new QuietusPresenter(Quietu::with('flat.owner.privileges.advantage', 'flat.block.street')->find($request->id));
         $serves = Serve::all();
         $indicationServes = $serves->where('unit', '!==', 'm^2');
         $areaServes = $serves->where('unit', 'm^2');
-
+       
         return view('reports.quietus', [
             'quietu' => $quietu,
             'indicationServes' => $indicationServes,

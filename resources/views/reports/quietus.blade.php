@@ -12,7 +12,8 @@
             <div><span style="font-weight: bold;">area:</span> {{ $quietu->flat->area }} m2</div>
         </div>
         <br>
-        <table class="table table-striped task-table" id="table">
+        <h5>Indication serves</h5>
+        <table class="table table-striped task-table" id="table">           
             <thead>
             <th>serve</th><th>tariff</th><th>indication</th><th>summary</th></thead>
             <tbody class="tbody">     
@@ -27,7 +28,8 @@
             </tbody>
         </table>
         <br/>
-        <table class="table table-striped task-table" id="table">
+        <h5>Area serves</h5>
+        <table class="table table-striped task-table" id="table">         
             <thead>
             <th>serve</th><th>tariff</th><th>summary</th></thead>
             <tbody class="tbody">     
@@ -40,9 +42,29 @@
                 @endforeach  
             </tbody>
         </table>
+        <br/>
+        @if (count($quietu->flat->owner->privileges) > 0)  
+        <h5>Privileges</h5>
+        <table class="table table-striped task-table" id="table">          
+            <thead>
+            <th>privilege</th><th>percent</th></thead>
+            <tbody class="tbody">     
+                @foreach ($quietu->flat->owner->privileges as $privilege)
+                <tr class="table-text">
+                    <td><div>{{ $privilege->advantage->name }}</div></td> 
+                    <td><div>{{ $privilege->advantage->percent }}</div></td>                 
+                </tr> 
+                @endforeach  
+            </tbody>
+        </table>
+        @endif  
         <div class="col-md-auto">
             <div><span style="font-weight: bold;">total:</span> {{ $quietu->calculate }}</div>
             <br>
+            @if (count($quietu->flat->owner->privileges) > 0)  
+            <div><span style="font-weight: bold;">total with privileges:</span> {{ $quietu->getCalculationWithPrivileges() }}</div>
+            <br>
+            @endif  
         </div>
     </div>
 </div>
